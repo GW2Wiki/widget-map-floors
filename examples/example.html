@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head >
+	<meta charset="UTF-8" >
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>GW2 Wiki Maps</title >
+</head >
+<body >
+
+<div class="gw2map"
+     data-continent-id="1"
+     data-floor-id="1"
+     data-region-id="4"
+     data-map-id=""
+     data-zoom="5"
+     data-center-coords=""
+     data-language="1"
+     data-map-controls="1"
+     data-polyline=""
+     data-markers=""
+></div>
+
+<div class="gw2map"
+     data-continent-id="2"
+     data-floor-id="3"
+     data-region-id=""
+     data-map-id=""
+     data-zoom="5"
+     data-center-coords=""
+     data-language="1"
+     data-map-controls="1"
+     data-polyline=""
+     data-markers=""
+></div>
+
+<script>
+	'use strict';
+
+	(($W, $D) =>{
+
+		var containers = $D.getElementsByClassName('gw2map');
+
+		// no map, no scripts.
+		if(!containers.length){
+			return;
+		}
+
+		// stylesheets to the <head>
+		[
+			'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.0-rc.1/leaflet.css',
+			'https://d1h9a8s8eodvjz.cloudfront.net/fonts/menomonia/08-02-12/menomonia.css',
+			'https://d1h9a8s8eodvjz.cloudfront.net/fonts/menomonia/08-02-12/menomonia-italic.css',
+			'../css/widget-map-floors.css'
+		].forEach(stylesheet =>{
+			var node = $D.createElement('link');
+			node.setAttribute('rel', 'stylesheet');
+			node.setAttribute('href', stylesheet);
+			$D.getElementsByTagName('head')[0].appendChild(node);
+		});
+
+		// scripts to <body>
+		[
+			'https://cdn.rawgit.com/github/fetch/master/fetch.js',
+//			'https://cdn.rawgit.com/MaxArt2501/object-observe/master/dist/object-observe.js',
+			'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.0-rc.1/leaflet.js',
+			'../src/gw2-geojson.js',
+			'../src/widget-map-floors.js',
+		].forEach(script =>{
+			var node = $D.createElement('script');
+			node.setAttribute('src', script);
+			$D.getElementsByTagName('body')[0].appendChild(node);
+		});
+
+		// ogogog
+		$W.addEventListener('load', () =>{
+
+			// check if leaflet is loaded (paranoid)
+			if(L.version){
+
+				// override L.TileLayer.getTileUrl() and add a custom tile getter
+				L.TileLayer.prototype.getTileUrl = function(coords){
+					var tileGetter = this.options.tileGetter;
+
+					if(typeof tileGetter === 'function'){
+						return tileGetter(coords, this._getZoomForUrl());
+					}
+
+					return false;
+				};
+
+				// saving the GW2Map objects for later usage
+				var maps = [];
+
+				for(var id = 0; id < containers.length; id++){
+					maps[id] = new GW2Map(containers[id], id, {
+						mapAttribution    : true,
+						mapAttributionHTML: ' &copy; <a href="http://www.arena.net/" target="_blank">ArenaNet</a> - <a href="http://wiki.guildwars2.com/wiki/API:Main" target="_blank">GW2 Maps API</a>',
+						errorTile         : 'https://wiki.guildwars2.com/images/a/af/Widget_Map_floors_blank_tile.png',
+						colors            : {
+							map_poly          : 'rgba(255, 255, 255, 0.3)',
+							region_poly       : 'rgba(255, 255, 255, 0.3)',
+							sector_poly       : 'rgba(255, 200, 20, 0.5)',
+							task_poly         : 'rgba(250, 250, 30, 0.5)',
+						},
+					});
+				}
+
+				maps.forEach(m => m.render());
+				console.log(maps);
+			}
+		});
+
+	})(window, document);
+</script>
+</body >
+</html >
