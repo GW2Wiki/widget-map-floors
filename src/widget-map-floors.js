@@ -19,6 +19,8 @@ class GW2Map {
 	/**
 	 * GW2Map constructor.
 	 *
+	 * @todo: https://github.com/arenanet/api-cdi/issues/337
+	 *
 	 * @param container
 	 * @param id
 	 * @param settings
@@ -37,7 +39,7 @@ class GW2Map {
 		this.maxZoom  = 7;
 		this.apiBase  = 'https://api.guildwars2.com/v2/';
 		this.tileBase = 'https://tiles.guildwars2.com/';
-		this.tileExt  = '.jpg'; // todo: https://gitter.im/arenanet/api-cdi?at=575f0fb997e1b2d245e2830d
+		this.tileExt  = '.jpg';
 
 		this.getOptions().setBaseMap();
 	}

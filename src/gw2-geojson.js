@@ -37,12 +37,13 @@ class GW2GeoJSON{
 	}
 
 	/**
+	 * @todo https://github.com/arenanet/api-cdi/issues/308
+	 *
 	 * @returns {GW2GeoJSON}
 	 */
 	setView(){
 
-		// todo: workaround https://gitter.im/arenanet/api-cdi?at=5754480da30177644b9982b7
-		if(this.data.id === 3 && typeof this.data.regions[7] === 'object'){
+		if(this.data.id === 3 && typeof this.data.regions[7] === 'object'){ // workaround for #308
 			this.viewRect = [[5118, 6922], [16382, 16382]];
 		}
 		else if(this.data.continent_rect){
@@ -98,7 +99,7 @@ class GW2GeoJSON{
 	}
 
 	/**
-	 * @todo @Lawton: region.id plz? PR... ikr.
+	 * @todo https://github.com/arenanet/api-cdi/issues/336
 	 *
 	 * @param region
 	 * @returns {GW2GeoJSON}
@@ -124,7 +125,7 @@ class GW2GeoJSON{
 	}
 
 	/**
-	 * @todo @Lawton: map.label_coord?
+	 * @todo https://github.com/arenanet/api-cdi/issues/334
 	 *
 	 * @param map
 	 * @returns {GW2GeoJSON}
@@ -216,7 +217,7 @@ class GW2GeoJSON{
 	}
 
 	/**
-	 * @todo: https://gitter.im/arenanet/api-cdi?at=57585f2ea1be01c01a78094f
+	 * @todo https://github.com/arenanet/api-cdi/issues/335
 	 *
 	 * @param tasks
 	 * @returns {GW2GeoJSON}
@@ -249,7 +250,7 @@ class GW2GeoJSON{
 	}
 
 	/**
-	 * @todo: https://github.com/arenanet/api-cdi/issues/329
+	 * @todo https://github.com/arenanet/api-cdi/issues/329
 	 *
 	 * @param heropoints
 	 * @returns {GW2GeoJSON}
