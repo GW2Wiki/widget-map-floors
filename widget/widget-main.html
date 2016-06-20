@@ -1,0 +1,47 @@
+<noinclude>
+== Yet another API driven map widget ==
+(description coming soon™)
+
+== Parameters ==
+===Common===
+;lang: display/API language (0=de, 1=en, 2=es, 3=fr, 4=zh), default: 1
+;controls: (bool), toggles the map controls, default: 0
+;zoom: (int), sets the initial zoom level for the map, default: 3
+;center_coords (2 comma separated integers): sets the initial center position for the map (optional)
+
+===Map selection===
+;continent_id: API ID of the continent (1=Tyria, 2=The Mists), default: 1
+;floor_id: floor ID to use, default: 1
+;region_id: region ID (optional)
+;map_id: ID of the map, only in conjunction with <code>region_id</code> (optional)
+
+===Misc===
+;polyline: collection of coordinates to draw a path (tba)
+;markers: collection of coordinates to set markers (tba)
+
+== Example ==
+===Template code===
+<code><nowiki>{{#Widget:Map floors|region_id=4|map_id=15|zoom=3}}</nowiki></code>
+
+===Generated HTML===
+<pre style="font-size:75%;"><div class="gw2map" data-continent_id="1" data-floor_id="1" data-region_id="4" data-map_id="15" data-center-coords="" data-zoom="3" data-language="1" data-controls="1" data-markers="" data-polyline=""></div></pre>
+
+===Live===
+<coming soon>
+
+===Used subpages===
+{{#dpl:namespace=Widget|titlematch=Map floors%}}
+
+==Known problems==
+Please don't bother me about these:
+
+;Icons make zone names hard to read.: And that is good the way it is. It'd be possible to "lift" the text on top via the z-index css property but it would defeat the purpose of the icons by making them unclickable.
+;I only see a part of the map although it would fit the container as a whole on a lower zoom level.:Getting the right zoom level is a very tricky task. [http://leaflet.js leaflet.js] sets it automatically from the given viewport/container size and the bounding box of the map (usually <code>continent_rect</code>) on a zoom level as high as possible. Since the maps are all different in size, it's impossible to just set zoom level X.
+;Some lines of the sector boundaries are crossing.:This is completely API/game data related. Rounding errors, careless mappers etc. Please complain [https://github.com/arenanet/api-cdi/issues to Anet], not me, about this.
+;I don't see a map. Like... not at all.:Do you have an adblocker or scriptblocker enabled? If so, disable it for the wiki and the following domains:
+* https://d1h9a8s8eodvjz.cloudfront.net/ (arenanet assets)
+* https://cdn.rawgit.com/ (github includes)
+* https://cdnjs.cloudflare.com/ (leaflet)
+
+</noinclude>
+<includeonly><noscript>scriptblocker, huh?</noscript><!-- we'll only accept integers and carefully regex'd values here. XSS prevention. --><div class="gw2map" data-continent-id="<!--{$continent_id|validate:int|default:1}-->" data-floor-id="<!--{$floor_id|validate:int|default:1}-->" data-region-id="<!--{$region_id|validate:int|default:-1}-->" data-map-id="<!--{$map_id|validate:int|default:-1}-->" data-center-coords="<!--{$center_coords|regex_replace:"#[^,\d\s]#":""}-->" data-zoom="<!--{$zoom|validate:int|default:3}-->" data-language="<!--{$lang|validate:int|default:1}-->" data-controls="<!--{$controls|validate:int|default:0}-->" data-polyline="<!--{$polyline|regex_replace:"#[^a-z,;=\-\d\s]#":""}-->" data-markers="<!--{$markers|regex_replace:"#[^a-z,;=\-\d\s]#":""}-->"></div></includeonly>
