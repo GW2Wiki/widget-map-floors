@@ -33,6 +33,7 @@ class GW2Map {
 
 		this.options   = {}; // per map options
 		this.layers    = {};
+		this.viewRect = [[0, 0], [32768, 32768]];
 
 		// constants
 		this.minZoom  = 0;
@@ -55,26 +56,18 @@ class GW2Map {
 		fetch(this.options.mapUrl, {mode: 'cors'})
 			.then(r =>{
 				if(r.status === 200){
-					return r;
+					return r.json();
 				}
 
 				throw new Error(r.statusText);
 			})
-			.then(r => r.json())
+			.then(r => new GW2GeoJSON(r).getData())
 			.then(r =>{
+				this.setView(r.viewRect);
 
-				this.layerData  = new GW2GeoJSON(r).getData();
-				this.layerNames = Object.keys(this.layerData.featureCollections);
-				this.viewRect   = this.layerData.viewRect;
-
-				// set bounds and view
-				var bounds = new GW2ContinentRect(this.viewRect).getBounds();
-				bounds = new L.LatLngBounds(this.p2ll(bounds[0]), this.p2ll(bounds[1])).pad(0.1);
-				// todo: center coords
-				this.map.setMaxBounds(bounds).setView(bounds.getCenter(), this.options.zoom);
-
+				this.layerNames = Object.keys(r.featureCollections);
 				this.layerNames.forEach(pane =>{
-					var GeoJSON = this.layerData.featureCollections[pane];
+					var GeoJSON = r.featureCollections[pane];
 //					console.log(layerName, GeoJSON);
 
 					this.layers[pane] = L.geoJson(GeoJSON, {
@@ -89,6 +82,30 @@ class GW2Map {
 
 			})
 			.catch(error => console.log('(╯°□°）╯彡┻━┻ ', error));
+
+		return this;
+	}
+
+	/**
+	 * set bounds and view
+	 *
+	 * @todo https://github.com/arenanet/api-cdi/issues/308
+	 *
+	 * @returns {GW2Map}
+	 */
+	setView(viewRect){
+
+		if(this.options.continent_id === 2 && this.options.floor_id === 3 && this.options.region_id === 7){ // workaround for #308
+			viewRect = [[5118, 6922], [16382, 16382]];
+		}
+
+		var bounds = new GW2ContinentRect(viewRect).getBounds();
+		bounds = new L.LatLngBounds(this.p2ll(bounds[0]), this.p2ll(bounds[1])).pad(0.1);
+		// todo: center coords
+		this.map.setMaxBounds(bounds).setView(bounds.getCenter(), this.options.zoom);
+
+		// set viewRect for the tile getter
+		this.viewRect = viewRect;
 
 		return this;
 	}

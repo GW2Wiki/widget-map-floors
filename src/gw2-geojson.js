@@ -37,16 +37,11 @@ class GW2GeoJSON{
 	}
 
 	/**
-	 * @todo https://github.com/arenanet/api-cdi/issues/308
-	 *
 	 * @returns {GW2GeoJSON}
 	 */
 	setView(){
 
-		if(this.data.id === 3 && typeof this.data.regions[7] === 'object'){ // workaround for #308
-			this.viewRect = [[5118, 6922], [16382, 16382]];
-		}
-		else if(this.data.continent_rect){
+		if(this.data.continent_rect){
 			this.viewRect = this.data.continent_rect;
 		}
 		else if(this.data.clamped_view){
