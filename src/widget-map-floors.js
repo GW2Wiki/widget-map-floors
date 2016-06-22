@@ -227,6 +227,10 @@ class GW2Map {
 				});
 			}
 
+			if(p.type === 'vista' && GW2Vistas[p.id]){
+				p.name = GW2Vistas[p.id].link;
+			}
+
 			if(p.type === 'jumpingpuzzle'){
 				iconOptions.iconSize    = [20, 20];
 				iconOptions.iconAnchor  = [10, 10];
@@ -285,7 +289,14 @@ class GW2Map {
 		}
 
 		if(p.name){
-			content += '<a href="' + this.i18n.wiki+encodeURIComponent(p.name.replace(/\.$/, '').replace(/\s/g, '_')) + '" target="_blank">' + p.name + '</a>';
+			var displayname = p.name;
+
+			// merge Alex's vista data
+			if(p.type === 'vista' && GW2Vistas[p.id]){
+				displayname = GW2Vistas[p.id].name;
+			}
+
+			content += '<a href="' + this.i18n.wiki+encodeURIComponent(p.name.replace(/\.$/, '').replace(/\s/g, '_')) + '" target="_blank">' + displayname + '</a>';
 		}
 
 		if(p.level){
