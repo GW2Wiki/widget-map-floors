@@ -63,9 +63,16 @@ class GW2Map {
 			})
 			.then(r => new GW2GeoJSON(r).getData())
 			.then(r =>{
-				this.setView(r.viewRect);
+				r.featureCollections.jumpingpuzzle_icon = this.mergeJPs();
+				r.featureCollections.masterypaoint_icon = this.mergeMPs();
 
 				this.layerNames = Object.keys(r.featureCollections);
+
+				return r;
+			})
+			.then(r =>{
+				this.setView(r.viewRect);
+
 				this.layerNames.forEach(pane =>{
 					var GeoJSON = r.featureCollections[pane];
 //					console.log(layerName, GeoJSON);
@@ -197,31 +204,65 @@ class GW2Map {
 	 * @param pane
 	 */
 	pointToLayer(feature, coords, pane){
+		var p = feature.properties;
 
 		// todo
-		if(feature.properties.layertype === 'icon'){
+		if(p.layertype === 'icon'){
+
+			var iconOptions = {
+				pane       : pane,
+				iconUrl    : p.icon,
+				iconSize   : [32, 32],
+				iconAnchor : [16, 16],
+				popupAnchor: [0, -16],
+			};
+
+			// merge Alex's Heropoint data
+			if(p.type === 'heropoint'){
+				GW2Heropoints.forEach(hp => {
+					if(p.coords[0] === hp.coord[0] && p.coords[1] === hp.coord[1]){
+						p.name = hp.link;
+						p.id   = hp.id;
+					}
+				});
+			}
+
+			if(p.type === 'jumpingpuzzle'){
+				iconOptions.iconSize    = [20, 20];
+				iconOptions.iconAnchor  = [10, 10];
+				iconOptions.popupAnchor = [0, -10];
+			}
+
+			if(p.type === 'masterypoint'){
+				iconOptions.iconSize    = [25, 25];
+				iconOptions.iconAnchor  = [12, 12];
+				iconOptions.popupAnchor = [0, -12];
+			}
+
 			return L.marker(coords, {
-				pane: pane,
-				title: feature.properties.name,
-				icon: L.icon({
-					pane: pane,
-					iconUrl: feature.properties.icon,
-					iconSize: [32, 32],
-					iconAnchor: [16, 16],
-					popupAnchor: [0, -16]
-				})
+				pane : pane,
+				title: p.name,
+				icon : L.icon(iconOptions),
 			});
 		}
-		else if(feature.properties.layertype === 'label'){
+		else if(p.layertype === 'label'){
+			var labelsize = {
+				map   : [200, 32],
+				region: [150, 24],
+				sector: [125, 20],
+			}[p.type];
+
+			var labelOptions = {
+				pane: pane,
+				iconSize   : labelsize,
+				popupAnchor: [0, -labelsize[1]/2],
+				className  : p.type + '-label',
+				html       : p.name,
+			};
+
 			return L.marker(coords, {
 				pane: pane,
-				icon: L.divIcon({
-					pane: pane,
-					iconSize   : [200, 20],
-					popupAnchor: [0, -10],
-					className  : feature.properties.type + '-label',
-					html       : feature.properties.name
-				})
+				icon: L.divIcon(labelOptions)
 			});
 		}
 //		else{console.log(feature, coords, pane)}
@@ -287,6 +328,46 @@ class GW2Map {
 		}
 
 		return {};
+	}
+
+	/**
+	 * merge Alex's JP data
+	 *
+	 * @returns {{type: string, features: Array}|*}
+	 */
+	mergeJPs(){
+		var jpFeatures = new GeoJSONFeatureCollection();
+
+		GW2JumpingPuzzles.forEach(jp =>{
+			jpFeatures.addFeature({
+				name     : jp.link,
+				type     : 'jumpingpuzzle',
+				layertype: 'icon',
+				icon     : 'https://wiki.guildwars2.com/images/3/31/Puzzle_tango_20.png',
+			}).setGeometry(jp.coord);
+		});
+
+		return jpFeatures.getJSON();
+	}
+
+	/**
+	 * merge Alex's MP data
+	 *
+	 * @returns {{type: string, features: Array}|*}
+	 */
+	mergeMPs(){
+		var mpFeatures = new GeoJSONFeatureCollection();
+
+		GW2MasteryPoints.forEach(mp =>{
+			mpFeatures.addFeature({
+				name     : mp.name,
+				type     : 'masterypoint',
+				layertype: 'icon',
+				icon     : '//wiki.guildwars2.com/images/thumb/c/c0/Mastery_point_%28Heart_of_Maguuma%29.png/25px-Mastery_point_%28Heart_of_Maguuma%29.png',
+			}).setGeometry(mp.coord);
+		});
+
+		return mpFeatures.getJSON();
 	}
 
 	/**
