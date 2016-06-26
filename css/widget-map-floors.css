@@ -10,14 +10,14 @@ html, body{
 	background: #000;
 }
 
-.layer-contol-icon{
+.gw2map-layer-contol-icon{
 	vertical-align: middle;
 	width: 16px;
 	height: 16px;
 	margin-right: 0.5em;
 }
 
-.region-label, .map-label, .sector-label{
+.gw2map-region-label, .gw2map-map-label, .gw2map-sector-label{
 	color: #fff;
 	font-family: Menomonia,sans-serif;
 	font-style: italic;
@@ -25,14 +25,28 @@ html, body{
 	text-align: center;
 }
 
-.region-label{
+.gw2map-region-label{
 	font-size: 32px;
 }
 
-.map-label{
+.gw2map-map-label{
 	font-size: 24px;
 }
 
-.sector-label{
+.gw2map-sector-label{
 	font-size: 20px;
+}
+
+.gw2map-chatlink{
+	margin: 0.25em;
+	width: 100%;
+	cursor: pointer;
+	border: 0;
+	text-align: center;
+	background-color: #eee;
+	min-width: 150px;
+}
+
+.gw2map-wikilink{
+
 }
