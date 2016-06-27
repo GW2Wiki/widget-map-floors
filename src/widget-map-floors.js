@@ -31,8 +31,9 @@ class GW2Map {
 		this.id        = id;
 		this.settings  = settings; // common settings for all maps
 
-		this.options   = {}; // per map options
-		this.layers    = {};
+		this.options  = {}; // per map options
+		this.layers   = {};
+		this.panes    = {};
 		this.viewRect = [[0, 0], [32768, 32768]];
 
 		// constants
@@ -48,6 +49,8 @@ class GW2Map {
 	/**
 	 * fires the API request and draws the map
 	 *
+	 * @todo https://github.com/arenanet/api-cdi/pull/62
+	 *
 	 * @returns {GW2Map}
 	 */
 	render(){
@@ -61,33 +64,47 @@ class GW2Map {
 
 				throw new Error(r.statusText);
 			})
+			// transform the response to GeoJSON - polyfill for #62
 			.then(r => new GW2GeoJSON(r).getData())
+			// add additional GeoJSON layers
 			.then(r =>{
 				r.featureCollections.jumpingpuzzle_icon = this.mergeJPs();
-				r.featureCollections.masterypaoint_icon = this.mergeMPs();
+				r.featureCollections.masterypoint_icon  = this.mergeMPs();
 
 				this.layerNames = Object.keys(r.featureCollections);
 
-				return r;
-			})
-			.then(r =>{
 				this.setView(r.viewRect);
 
-				this.layerNames.forEach(pane =>{
-					var GeoJSON = r.featureCollections[pane];
-//					console.log(layerName, GeoJSON);
+				return r;
+			})
+			// draw the map from the GeoJson data
+			.then(r =>{
 
-					this.layers[pane] = L.geoJson(GeoJSON, {
-						pane: this.map.createPane(pane),
+				this.layerNames.forEach(pane =>{
+					let GeoJSON = r.featureCollections[pane];
+//					console.log(layerName, GeoJSON);
+					this.panes[pane] = L.geoJson(GeoJSON, {
+						pane          : this.map.createPane(pane),
 						coordsToLatLng: coords => this.p2ll(coords),
-						pointToLayer: (feature, coords) => this.pointToLayer(feature, coords, pane),
-						onEachFeature: (feature, layer) => this.onEachFeature(feature, layer, pane),
-						style: feature => this.layerStyle(feature, pane),
+						pointToLayer  : (feature, coords) => this.pointToLayer(feature, coords, pane),
+						onEachFeature : (feature, layer) => this.onEachFeature(feature, layer, pane),
+						style         : feature => this.layerStyle(feature, pane),
 					}).addTo(this.map);
 
+					this.layers[pane] = L.layerGroup();
 				});
-
 			})
+			// do stuff
+			.then(() =>{
+				// add the layer controls
+				L.control.layers(null, this.panes).addTo(this.map);
+
+				// add a coordinate debugger
+				this.map.on('click', point => {
+					console.log(this.map.project(point.latlng, this.maxZoom).toString());
+				});
+			})
+			// i can haz error? kthxbye!
 			.catch(error => console.log('(╯°□°）╯彡┻━┻ ', error));
 
 		return this;
@@ -106,8 +123,9 @@ class GW2Map {
 			viewRect = [[5118, 6922], [16382, 16382]];
 		}
 
-		var bounds = new GW2ContinentRect(viewRect).getBounds();
+		let bounds = new GW2ContinentRect(viewRect).getBounds();
 		bounds = new L.LatLngBounds(this.p2ll(bounds[0]), this.p2ll(bounds[1])).pad(0.1);
+
 		// todo: center coords
 		this.map.setMaxBounds(bounds).setView(bounds.getCenter(), this.options.zoom);
 
@@ -123,15 +141,15 @@ class GW2Map {
 	 * @returns {GW2Map}
 	 */
 	getOptions(){
-		var dataset = this.container.dataset;
+		let dataset = this.container.dataset;
 
 		// intval() all the things. again, a mix of paranoia and laziness.
-		var continent_id = Tools.intval(dataset.continentId);
-		var floor_id     = !dataset.floorId ? 1 : Tools.intval(dataset.floorId); // default to floor 1 if none is given
-		var region_id    = Tools.intval(dataset.regionId);
-		var map_id       = Tools.intval(dataset.mapId);
-		var zoom         = Tools.intval(dataset.zoom);
-		var lang         = Tools.intval(dataset.language);
+		let continent_id = Tools.intval(dataset.continentId);
+		let floor_id     = !dataset.floorId ? 1 : Tools.intval(dataset.floorId); // default to floor 1 if none is given
+		let region_id    = Tools.intval(dataset.regionId);
+		let map_id       = Tools.intval(dataset.mapId);
+		let zoom         = Tools.intval(dataset.zoom);
+		let lang         = Tools.intval(dataset.language);
 
 		continent_id = Tools.in_array(continent_id, [1, 2]) ? continent_id : 1;
 		region_id    = region_id > 0 ? region_id : false;
@@ -139,7 +157,7 @@ class GW2Map {
 		lang         = ['de', 'en', 'es', 'fr', 'zh'][lang >= 0 && lang <= 4 ? lang : 1];
 
 		// build the request path
-		var path = 'continents/' + continent_id + '/floors/' + floor_id;
+		let path = 'continents/' + continent_id + '/floors/' + floor_id;
 		path += region_id ? '/regions/' + region_id : '';
 		path += region_id && map_id ? '/maps/' + map_id : '';
 		path += '?lang=' + lang;
@@ -204,12 +222,12 @@ class GW2Map {
 	 * @param pane
 	 */
 	pointToLayer(feature, coords, pane){
-		var p = feature.properties;
+		let p = feature.properties;
 
 		// todo
 		if(p.layertype === 'icon'){
 
-			var iconOptions = {
+			let iconOptions = {
 				pane       : pane,
 				iconUrl    : p.icon,
 				iconSize   : [32, 32],
@@ -250,17 +268,17 @@ class GW2Map {
 			});
 		}
 		else if(p.layertype === 'label'){
-			var labelsize = {
+			let labelsize = {
 				map   : [200, 32],
 				region: [150, 24],
 				sector: [125, 20],
 			}[p.type];
 
-			var labelOptions = {
+			let labelOptions = {
 				pane: pane,
 				iconSize   : labelsize,
 				popupAnchor: [0, -labelsize[1]/2],
-				className  : p.type + '-label',
+				className  : 'gw2map-' + p.type + '-label',
 				html       : p.name,
 			};
 
@@ -280,23 +298,23 @@ class GW2Map {
 	 */
 	onEachFeature(feature, layer, pane){
 //		console.log(feature, layer, pane);
-		var p = feature.properties;
+		let p = feature.properties;
 
-		var content = '';
+		let content = '';
 
 		if(p.icon){
-			content += '<img class="layer-contol-icon" src="' + p.icon + '" />';
+			content += '<img class="gw2map-layer-contol-icon" src="' + p.icon + '" />';
 		}
 
 		if(p.name){
-			var displayname = p.name;
+			let displayname = p.name;
 
 			// merge Alex's vista data
 			if(p.type === 'vista' && GW2Vistas[p.id]){
 				displayname = GW2Vistas[p.id].name;
 			}
 
-			content += '<a href="' + this.i18n.wiki+encodeURIComponent(p.name.replace(/\.$/, '').replace(/\s/g, '_')) + '" target="_blank">' + displayname + '</a>';
+			content += '<a class="gw2map-wikilink" href="' + this.i18n.wiki+encodeURIComponent(p.name.replace(/\.$/, '').replace(/\s/g, '_')) + '" target="_blank">' + displayname + '</a>';
 		}
 
 		if(p.level){
@@ -307,7 +325,7 @@ class GW2Map {
 			if(content){
 				content += '<br>';
 			}
-			content += '<input class="chatlink" type="text" value="' + p.chat_link + '" readonly="readonly" onclick="this.select();return false;" />';
+			content += '<input class="gw2map-chatlink" type="text" value="' + p.chat_link + '" readonly="readonly" onclick="this.select();return false;" />';
 		}
 
 		if(content){
@@ -347,7 +365,7 @@ class GW2Map {
 	 * @returns {{type: string, features: Array}|*}
 	 */
 	mergeJPs(){
-		var jpFeatures = new GeoJSONFeatureCollection();
+		let jpFeatures = new GeoJSONFeatureCollection();
 
 		GW2JumpingPuzzles.forEach(jp =>{
 			jpFeatures.addFeature({
@@ -367,14 +385,14 @@ class GW2Map {
 	 * @returns {{type: string, features: Array}|*}
 	 */
 	mergeMPs(){
-		var mpFeatures = new GeoJSONFeatureCollection();
+		let mpFeatures = new GeoJSONFeatureCollection();
 
 		GW2MasteryPoints.forEach(mp =>{
 			mpFeatures.addFeature({
 				name     : mp.name,
 				type     : 'masterypoint',
 				layertype: 'icon',
-				icon     : '//wiki.guildwars2.com/images/thumb/c/c0/Mastery_point_%28Heart_of_Maguuma%29.png/25px-Mastery_point_%28Heart_of_Maguuma%29.png',
+				icon     : 'https://wiki.guildwars2.com/images/thumb/c/c0/Mastery_point_%28Heart_of_Maguuma%29.png/25px-Mastery_point_%28Heart_of_Maguuma%29.png',
 			}).setGeometry(mp.coord);
 		});
 
@@ -395,7 +413,7 @@ class GW2Map {
 	 * @returns {*[]}
 	 */
 	project(point, zoom){
-		var div = 1 << (this.maxZoom - zoom);
+		let div = 1 << (this.maxZoom - zoom);
 
 		return [point[0] / div, point[1] / div];
 	}
@@ -406,11 +424,13 @@ class GW2Map {
 	 * @returns {*}
 	 */
 	tileGetter(coords, zoom){
-		var nw = this.project(this.viewRect[0], zoom);
-		var se = this.project(this.viewRect[1], zoom);
+		let nw = this.project(this.viewRect[0], zoom);
+		let se = this.project(this.viewRect[1], zoom);
 
-		if(coords.x < Math.ceil(se[0] / 256) && coords.y < Math.ceil(se[1] / 256)
-			&& coords.x >= Math.floor(nw[0] / 256) && coords.y >= Math.floor(nw[1] / 256)
+		if(coords.x < Math.ceil(se[0] / 256)
+		   && coords.y < Math.ceil(se[1] / 256)
+		   && coords.x >= Math.floor(nw[0] / 256)
+		   && coords.y >= Math.floor(nw[1] / 256)
 		){
 			return this.tileBase + this.options.continent_id + '/' + this.options.floor_id +
 				'/' + zoom + '/' + coords.x + '/' + coords.y + this.tileExt;
@@ -433,7 +453,7 @@ class Tools{
 	 * @returns {*}
 	 */
 	static extend(target, source) {
-		for(var property in source) {
+		for(let property in source) {
 			if(source.hasOwnProperty(property)) {
 				target[property] = source[property];
 			}
@@ -450,8 +470,8 @@ class Tools{
 	 * @returns {*}
 	 */
 	static intval(mixed_var, base){
-		var tmp;
-		var type = typeof(mixed_var);
+		let tmp;
+		let type = typeof(mixed_var);
 
 		if(type === 'boolean'){
 			return +mixed_var;
@@ -469,15 +489,12 @@ class Tools{
 	}
 
 	/**
-	 * @link  http://phpjs.org/functions/in_array/
-	 *
 	 * @param needle
 	 * @param haystack
 	 * @returns {boolean}
 	 */
 	static in_array(needle, haystack){
-
-		for(var key in haystack){
+		for(let key in haystack){
 			if(haystack.hasOwnProperty(key)){
 				if(haystack[key] === needle){
 					return true;
@@ -493,132 +510,41 @@ class Tools{
 /**
  * TODO: add es & fr language snippets, layers
  */
-var i18n = {
+const i18n = {
 	de: {
 		wiki       : 'https://wiki-de.guildwars2.com/wiki/',
 		attribution: 'Kartendaten und -bilder',
 		layers     : {
-			event     : 'Events',
-			landmark  : 'Sehenswürdigkeiten',
-			map       : 'Kartennamen',
-			markers   : 'Marker',
-			polylines : 'Polylinien',
-			region    : 'Regionen',
-			sector    : 'Zonen',
-			heropoint : 'Fertigkeitspunkte',
-			task      : 'Aufgaben',
-			unlock    : 'unlock',
-			vista     : 'Aussichtspunkte',
-			waypoint  : 'Wegpunkte',
-			Camp      : 'wvw_camp',
-			Tower     : 'wvw_tower',
-			Keep      : 'wvw_keep',
-			Castle    : 'wvw_castle',
-			Ruins     : 'wvw_ruins',
-			Generic   : 'wvw_generic',
-			Resource  : 'wvw_resource',
-		}
+
+		},
 	},
 	en: {
 		wiki       : 'https://wiki.guildwars2.com/wiki/',
 		attribution: 'Map data and imagery',
 		layers     : {
-			// test
-			event     : 'Events',
-			landmark  : 'Landmarks',
-			map       : 'Map Names',
-			markers   : 'Markers',
-			polylines : 'Polylines',
-			region    : 'Region Names',
-			sector    : 'Sectors',
-			heropoint : 'Skill Challenges',
-			task      : 'Tasks',
-			unlock    : 'unlock',
-			vista     : 'Vistas',
-			waypoint  : 'Waypoints',
-			Camp      : 'wvw_camp',
-			Tower     : 'wvw_tower',
-			Keep      : 'wvw_keep',
-			Castle    : 'wvw_castle',
-			Ruins     : 'wvw_ruins',
-			Generic   : 'wvw_generic',
-			Resource  : 'wvw_resource',
-		}
+
+		},
 	},
 	es: {
 		wiki       : 'https://wiki-es.guildwars2.com/wiki/',
 		attribution: 'attribution-es',
 		layers     : {
-			event     : 'event-es',
-			landmark  : 'poi-es',
-			map       : 'map-es',
-			markers   : 'markers-es',
-			polylines : 'polyline-es',
-			region    : 'region-es',
-			sector    : 'sector-es',
-			heropoint : 'skill-es',
-			task      : 'task-es',
-			unlock    : 'unlock',
-			vista     : 'vista-es',
-			waypoint  : 'waypoint-es',
-			Camp      : 'wvw_camp',
-			Tower     : 'wvw_tower',
-			Keep      : 'wvw_keep',
-			Castle    : 'wvw_castle',
-			Ruins     : 'wvw_ruins',
-			Generic   : 'wvw_generic',
-			Resource  : 'wvw_resource',
-		}
+
+		},
 	},
 	fr: {
 		wiki       : 'https://wiki-fr.guildwars2.com/wiki/',
 		attribution: 'attribution-fr',
 		layers     : {
-			event     : 'event-fr',
-			landmark  : 'Sites remarquables',
-			map       : 'map-fr',
-			markers   : 'markers-fr',
-			polylines : 'polyline-fr',
-			region    : 'region-fr',
-			sector    : 'Secteurs',
-			heropoint : 'Défis de compétences',
-			unlock    : 'unlock',
-			task      : 'Cœurs',
-			vista     : 'Panoramas',
-			waypoint  : 'Points de passage',
-			Camp      : 'wvw_camp',
-			Tower     : 'wvw_tower',
-			Keep      : 'wvw_keep',
-			Castle    : 'wvw_castle',
-			Ruins     : 'wvw_ruins',
-			Generic   : 'wvw_generic',
-			Resource  : 'wvw_resource',
-		}
+
+		},
 	},
 	zh: {
 		wiki       : '',
 		attribution: 'attribution-zh',
 		layers     : {
-			event     : 'event-zh',
-			landmark  : 'poi-zh',
-			map       : 'map-zh',
-			markers   : 'markers-zh',
-			polylines : 'polyline-zh',
-			region    : 'region-zh',
-			sector    : 'sector-zh',
-			heropoint : 'skill-zh',
-			task      : 'task-zh',
-			unlock    : 'unlock',
-			vista     : 'vista-zh',
-			waypoint  : 'waypoint-zh',
-			Camp      : 'wvw_camp',
-			Tower     : 'wvw_tower',
-			Keep      : 'wvw_keep',
-			Castle    : 'wvw_castle',
-			Ruins     : 'wvw_ruins',
-			Generic   : 'wvw_generic',
-			Resource  : 'wvw_resource',
-		}
+
+		},
 	},
 };
 
