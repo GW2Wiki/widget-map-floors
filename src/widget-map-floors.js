@@ -31,8 +31,9 @@ class GW2Map {
 		this.id        = id;
 		this.settings  = settings; // common settings for all maps
 
-		this.options   = {}; // per map options
-		this.layers    = {};
+		this.options  = {}; // per map options
+		this.layers   = {};
+		this.panes    = {};
 		this.viewRect = [[0, 0], [32768, 32768]];
 
 		// constants
@@ -48,6 +49,8 @@ class GW2Map {
 	/**
 	 * fires the API request and draws the map
 	 *
+	 * @todo https://github.com/arenanet/api-cdi/pull/62
+	 *
 	 * @returns {GW2Map}
 	 */
 	render(){
@@ -61,33 +64,47 @@ class GW2Map {
 
 				throw new Error(r.statusText);
 			})
+			// transform the response to GeoJSON - polyfill for #62
 			.then(r => new GW2GeoJSON(r).getData())
+			// add additional GeoJSON layers
 			.then(r =>{
 				r.featureCollections.jumpingpuzzle_icon = this.mergeJPs();
 				r.featureCollections.masterypoint_icon  = this.mergeMPs();
 
 				this.layerNames = Object.keys(r.featureCollections);
 
+				this.setView(r.viewRect);
+
 				return r;
 			})
+			// draw the map from the GeoJson data
 			.then(r =>{
-				this.setView(r.viewRect);
 
 				this.layerNames.forEach(pane =>{
 					let GeoJSON = r.featureCollections[pane];
 //					console.log(layerName, GeoJSON);
-
-					this.layers[pane] = L.geoJson(GeoJSON, {
-						pane: this.map.createPane(pane),
+					this.panes[pane] = L.geoJson(GeoJSON, {
+						pane          : this.map.createPane(pane),
 						coordsToLatLng: coords => this.p2ll(coords),
-						pointToLayer: (feature, coords) => this.pointToLayer(feature, coords, pane),
-						onEachFeature: (feature, layer) => this.onEachFeature(feature, layer, pane),
-						style: feature => this.layerStyle(feature, pane),
+						pointToLayer  : (feature, coords) => this.pointToLayer(feature, coords, pane),
+						onEachFeature : (feature, layer) => this.onEachFeature(feature, layer, pane),
+						style         : feature => this.layerStyle(feature, pane),
 					}).addTo(this.map);
 
+					this.layers[pane] = L.layerGroup();
 				});
-
 			})
+			// do stuff
+			.then(() =>{
+				// add the layer controls
+				L.control.layers(null, this.panes).addTo(this.map);
+
+				// add a coordinate debugger
+				this.map.on('click', point => {
+					console.log(this.map.project(point.latlng, this.maxZoom).toString());
+				});
+			})
+			// i can haz error? kthxbye!
 			.catch(error => console.log('(╯°□°）╯彡┻━┻ ', error));
 
 		return this;
