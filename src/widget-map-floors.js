@@ -100,9 +100,7 @@ class GW2Map {
 				L.control.layers(null, this.panes).addTo(this.map);
 
 				// add a coordinate debugger
-				this.map.on('click', point => {
-					console.log(this.map.project(point.latlng, this.maxZoom).toString());
-				});
+				this.map.on('click', point => console.log(this.map.project(point.latlng, this.maxZoom).toString()));
 			})
 			// i can haz error? kthxbye!
 			.catch(error => console.log('(╯°□°）╯彡┻━┻ ', error));
@@ -126,8 +124,18 @@ class GW2Map {
 		let bounds = new GW2ContinentRect(viewRect).getBounds();
 		bounds = new L.LatLngBounds(this.p2ll(bounds[0]), this.p2ll(bounds[1])).pad(0.1);
 
-		// todo: center coords
-		this.map.setMaxBounds(bounds).setView(bounds.getCenter(), this.options.zoom);
+		let center = bounds.getCenter();
+		let coords = this.options.centerCoords;
+
+		if(coords.length === 2){
+			coords.forEach((pos, i) => coords[i] = Tools.intval(pos));
+
+			if(coords[0] !== 0 && coords[1] !== 0){
+				center = this.p2ll(coords);
+			}
+		}
+
+		this.map.setMaxBounds(bounds).setView(center, this.options.zoom);
 
 		// set viewRect for the tile getter
 		this.viewRect = viewRect;
@@ -167,6 +175,7 @@ class GW2Map {
 
 		// stuff
 		this.options = {
+			centerCoords: dataset.centerCoords.split(','),
 			continent_id: continent_id,
 			floor_id    : floor_id,
 			region_id   : region_id,
