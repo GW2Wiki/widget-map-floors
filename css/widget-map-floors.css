@@ -50,3 +50,11 @@ html, body{
 .gw2map-wikilink{
 
 }
+
+.leaflet-task_label-pane > img:hover{
+	content: url("https://render.guildwars2.com/file/B3DEEC72BBEF0C6FC6FEF835A0E275FCB1151BB7/102439.png");
+}
+
+.leaflet-waypoint_icon-pane > img:hover{
+	content: url("https://render.guildwars2.com/file/95CE3F6B0502232AD90034E4B7CE6E5B0FD3CC5F/157354.png");
+}
