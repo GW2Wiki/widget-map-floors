@@ -128,7 +128,7 @@ class GW2GeoJSON{
 	map(map){
 //		console.log('map', map);
 
-		var rect = new GW2ContinentRect(map.continent_rect);
+		let rect = new GW2ContinentRect(map.continent_rect);
 
 		this.featureCollections.map_label.addFeature({
 			name          : map.name,
@@ -162,7 +162,7 @@ class GW2GeoJSON{
 	sectors(sectors){
 
 		Object.keys(sectors).forEach(sectorId =>{
-			var sector = sectors[sectorId];
+			let sector = sectors[sectorId];
 //			console.log('sector', sector);
 
 			this.featureCollections.sector_label.addFeature({
@@ -188,7 +188,7 @@ class GW2GeoJSON{
 	 * @returns {GW2GeoJSON}
 	 */
 	poi(pois){
-		var icons = {
+		let icons = {
 			landmark: 'https://render.guildwars2.com/file/25B230711176AB5728E86F5FC5F0BFAE48B32F6E/97461.png',
 			unlock  : 'https://render.guildwars2.com/file/943538394A94A491C8632FBEF6203C2013443555/102478.png', // dungeon icon
 			vista   : 'https://render.guildwars2.com/file/A2C16AF497BA3A0903A0499FFBAF531477566F10/358415.png',
@@ -196,7 +196,7 @@ class GW2GeoJSON{
 		};
 
 		Object.keys(pois).forEach(poiID =>{
-			var poi = pois[poiID];
+			let poi = pois[poiID];
 //			console.log(poi);
 
 			this.featureCollections[poi.type + '_icon'].addFeature({
@@ -218,7 +218,7 @@ class GW2GeoJSON{
 	task(tasks){
 
 		Object.keys(tasks).forEach(taskID =>{
-			var task = tasks[taskID];
+			let task = tasks[taskID];
 //			console.log(task);
 
 			this.featureCollections.task_icon.addFeature({
@@ -366,7 +366,7 @@ class GeoJSONFeatureCollection{
 	 * @returns {GeoJSONFeature}
 	 */
 	addFeature(properties){
-		var feature = new GeoJSONFeature(properties);
+		let feature = new GeoJSONFeature(properties);
 		this.json.features.push(feature);
 
 		return feature;
@@ -439,7 +439,7 @@ class GeoJSONFeature{
 	 */
 	static in_array(needle, haystack){
 
-		for(var key in haystack){
+		for(let key in haystack){
 			if(haystack.hasOwnProperty(key)){
 				if(haystack[key] === needle){
 					return true;
