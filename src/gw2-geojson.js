@@ -188,12 +188,6 @@ class GW2GeoJSON{
 	 * @returns {GW2GeoJSON}
 	 */
 	poi(pois){
-		let icons = {
-			landmark: 'https://render.guildwars2.com/file/25B230711176AB5728E86F5FC5F0BFAE48B32F6E/97461.png',
-			unlock  : 'https://render.guildwars2.com/file/943538394A94A491C8632FBEF6203C2013443555/102478.png', // dungeon icon
-			vista   : 'https://render.guildwars2.com/file/A2C16AF497BA3A0903A0499FFBAF531477566F10/358415.png',
-			waypoint: 'https://render.guildwars2.com/file/32633AF8ADEA696A1EF56D3AE32D617B10D3AC57/157353.png',
-		};
 
 		Object.keys(pois).forEach(poiID =>{
 			let poi = pois[poiID];
@@ -204,7 +198,6 @@ class GW2GeoJSON{
 				type     : poi.type,
 				chat_link: poi.chat_link || false,
 				layertype: 'icon',
-				icon     : icons[poi.type],
 			}).setGeometry(poi.coord).setID(poi.id || false);
 		});
 
@@ -227,7 +220,6 @@ class GW2GeoJSON{
 				level    : task.level,
 				type     : 'task',
 				layertype: 'icon',
-				icon     : 'https://render.guildwars2.com/file/09ACBA53B7412CC3C76E7FEF39929843C20CB0E4/102440.png',
 			}).setGeometry(task.coord).setID(task.id);
 
 			this.featureCollections.task_poly.addFeature({
@@ -260,7 +252,6 @@ class GW2GeoJSON{
 				coords   : heropoint.coord,
 				type     : 'heropoint',
 				layertype: 'icon',
-				icon     : 'https://render.guildwars2.com/file/B4EC6BB3FDBC42557C3CAE0CAA9E57EBF9E462E3/156626.png',
 			}).setGeometry(heropoint.coord);
 		});
 
@@ -431,8 +422,6 @@ class GeoJSONFeature{
 	}
 
 	/**
-	 * @link http://phpjs.org/functions/in_array/
-	 *
 	 * @param needle
 	 * @param haystack
 	 * @returns {boolean}
