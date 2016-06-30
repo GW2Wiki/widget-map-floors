@@ -22,7 +22,7 @@ class GW2GeoJSON{
 			'region_label', 'region_poly',
 			'map_label', 'map_poly',
 			'sector_label', 'sector_poly',
-			'task_label', // 'task_poly',
+			'task_icon', 'task_poly',
 			'heropoint_icon',
 			'waypoint_icon',
 			'landmark_icon',
@@ -212,8 +212,6 @@ class GW2GeoJSON{
 	}
 
 	/**
-	 * @todo https://github.com/arenanet/api-cdi/issues/335
-	 *
 	 * @param tasks
 	 * @returns {GW2GeoJSON}
 	 */
@@ -223,7 +221,7 @@ class GW2GeoJSON{
 			var task = tasks[taskID];
 //			console.log(task);
 
-			this.featureCollections.task_label.addFeature({
+			this.featureCollections.task_icon.addFeature({
 				name     : task.objective,
 				chat_link: task.chat_link,
 				level    : task.level,
@@ -232,13 +230,12 @@ class GW2GeoJSON{
 				icon     : 'https://render.guildwars2.com/file/09ACBA53B7412CC3C76E7FEF39929843C20CB0E4/102440.png',
 			}).setGeometry(task.coord).setID(task.id);
 
-/*
 			this.featureCollections.task_poly.addFeature({
 				name     : task.objective,
 				type     : 'task',
 				layertype: 'poly',
-			}).setGeometry(task.bounds, 'Polygon').setID(task.id);
-*/
+			}).setGeometry([task.bounds], 'Polygon').setID(task.id);
+
 		});
 
 		return this;
