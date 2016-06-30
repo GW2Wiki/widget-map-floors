@@ -28,6 +28,8 @@ class GW2GeoJSON{
 			'landmark_icon',
 			'vista_icon',
 			'unlock_icon',
+//			'masterypoint_icon',
+//			'adventure_icon',
 //			'camp', 'tower', 'keep', 'castle', 'ruins', 'generic', 'resource'
 		];
 
@@ -150,6 +152,8 @@ class GW2GeoJSON{
 			.poi(map.points_of_interest)
 			.task(map.tasks)
 			.heropoint(map.skill_challenges)
+			.masteryPoint(map.mastery_points)
+			.adventure(map.adventures)
 		;
 
 		return this;
@@ -258,6 +262,35 @@ class GW2GeoJSON{
 		return this;
 	}
 
+	/**
+	 * @param masterypoints
+	 * @returns {GW2GeoJSON}
+	 */
+	masteryPoint(masterypoints){
+
+		if(!masterypoints.length){
+			return this;
+		}
+
+		console.log(masterypoints);
+
+		return this;
+	}
+
+	/**
+	 * @param adventures
+	 * @returns {GW2GeoJSON}
+	 */
+	adventure(adventures){
+
+		if(!adventures.length){
+			return this;
+		}
+
+		console.log(adventures);
+
+		return this;
+	}
 }
 
 /**
