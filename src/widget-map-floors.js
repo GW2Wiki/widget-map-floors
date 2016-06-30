@@ -233,69 +233,31 @@ class GW2Map {
 	pointToLayer(feature, coords, pane){
 		let p = feature.properties;
 
-		// todo
-		if(p.layertype === 'icon'){
-
-			let iconOptions = {
-				pane       : pane,
-				iconUrl    : p.icon,
-				iconSize   : [32, 32],
-				iconAnchor : [16, 16],
-				popupAnchor: [0, -16],
-			};
-
-			// merge Alex's Heropoint data
-			if(p.type === 'heropoint'){
-				GW2Heropoints.forEach(hp => {
-					if(p.coords[0] === hp.coord[0] && p.coords[1] === hp.coord[1]){
-						p.name = hp.link;
-						p.id   = hp.id;
-					}
-				});
-			}
-
-			if(p.type === 'vista' && GW2Vistas[p.id]){
-				p.name = GW2Vistas[p.id].link;
-			}
-
-			if(p.type === 'jumpingpuzzle'){
-				iconOptions.iconSize    = [20, 20];
-				iconOptions.iconAnchor  = [10, 10];
-				iconOptions.popupAnchor = [0, -10];
-			}
-
-			if(p.type === 'masterypoint'){
-				iconOptions.iconSize    = [25, 25];
-				iconOptions.iconAnchor  = [12, 12];
-				iconOptions.popupAnchor = [0, -12];
-			}
-
-			return L.marker(coords, {
-				pane : pane,
-				title: p.name,
-				icon : L.icon(iconOptions),
+		// merge Alex's Heropoint data
+		if(p.type === 'heropoint'){
+			GW2Heropoints.forEach(hp => {
+				if(p.coords[0] === hp.coord[0] && p.coords[1] === hp.coord[1]){
+					p.name = hp.link;
+					p.id   = hp.id;
+				}
 			});
 		}
-		else if(p.layertype === 'label'){
-			let labelsize = {
-				map   : [200, 32],
-				region: [150, 24],
-				sector: [125, 20],
-			}[p.type];
 
-			let labelOptions = {
-				pane: pane,
-				iconSize   : labelsize,
-				popupAnchor: [0, -labelsize[1]/2],
-				className  : 'gw2map-' + p.type + '-label',
-				html       : p.name,
-			};
-
-			return L.marker(coords, {
-				pane: pane,
-				icon: L.divIcon(labelOptions)
-			});
+		if(p.type === 'vista' && GW2Vistas[p.id]){
+			p.name = GW2Vistas[p.id].link;
 		}
+
+		return L.marker(coords, {
+			pane: pane,
+			title: p.layertype === 'icon' ? p.name : null,
+			icon: L.divIcon({
+				pane: pane,
+				iconSize   : [null, null],
+				popupAnchor: [null, null], // todo: fix popup center -> L.Marker
+				className  : 'gw2map-' + p.layertype + ' gw2map-' + p.type + '-' + p.layertype,
+				html       : p.layertype === 'label' ? p.name : '',
+			})
+		});
 //		else{console.log(feature, coords, pane)}
 	}
 
@@ -311,8 +273,8 @@ class GW2Map {
 
 		let content = '';
 
-		if(p.icon){
-			content += '<img class="gw2map-layer-contol-icon" src="' + p.icon + '" />';
+		if(p.layertype === 'icon'){
+			content += '<span class="gw2map-popup-icon gw2map-'+ p.type +'-icon" ></span>';
 		}
 
 		if(p.name){
@@ -381,7 +343,6 @@ class GW2Map {
 				name     : jp.link,
 				type     : 'jumpingpuzzle',
 				layertype: 'icon',
-				icon     : 'https://wiki.guildwars2.com/images/3/31/Puzzle_tango_20.png',
 			}).setGeometry(jp.coord);
 		});
 
@@ -401,7 +362,6 @@ class GW2Map {
 				name     : mp.name,
 				type     : 'masterypoint',
 				layertype: 'icon',
-				icon     : 'https://wiki.guildwars2.com/images/thumb/c/c0/Mastery_point_%28Heart_of_Maguuma%29.png/25px-Mastery_point_%28Heart_of_Maguuma%29.png',
 			}).setGeometry(mp.coord);
 		});
 

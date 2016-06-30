@@ -28,6 +28,8 @@ class GW2GeoJSON{
 			'landmark_icon',
 			'vista_icon',
 			'unlock_icon',
+//			'masterypoint_icon',
+//			'adventure_icon',
 //			'camp', 'tower', 'keep', 'castle', 'ruins', 'generic', 'resource'
 		];
 
@@ -48,7 +50,7 @@ class GW2GeoJSON{
 			this.viewRect = this.data.clamped_view;
 		}
 		else if(this.data.texture_dims){
-			this.viewRect = [[0, 0], json.texture_dims];
+			this.viewRect = [[0, 0], this.data.texture_dims];
 		}
 
 		return this;
@@ -150,6 +152,8 @@ class GW2GeoJSON{
 			.poi(map.points_of_interest)
 			.task(map.tasks)
 			.heropoint(map.skill_challenges)
+			.masteryPoint(map.mastery_points)
+			.adventure(map.adventures)
 		;
 
 		return this;
@@ -188,12 +192,6 @@ class GW2GeoJSON{
 	 * @returns {GW2GeoJSON}
 	 */
 	poi(pois){
-		let icons = {
-			landmark: 'https://render.guildwars2.com/file/25B230711176AB5728E86F5FC5F0BFAE48B32F6E/97461.png',
-			unlock  : 'https://render.guildwars2.com/file/943538394A94A491C8632FBEF6203C2013443555/102478.png', // dungeon icon
-			vista   : 'https://render.guildwars2.com/file/A2C16AF497BA3A0903A0499FFBAF531477566F10/358415.png',
-			waypoint: 'https://render.guildwars2.com/file/32633AF8ADEA696A1EF56D3AE32D617B10D3AC57/157353.png',
-		};
 
 		Object.keys(pois).forEach(poiID =>{
 			let poi = pois[poiID];
@@ -204,7 +202,6 @@ class GW2GeoJSON{
 				type     : poi.type,
 				chat_link: poi.chat_link || false,
 				layertype: 'icon',
-				icon     : icons[poi.type],
 			}).setGeometry(poi.coord).setID(poi.id || false);
 		});
 
@@ -227,7 +224,6 @@ class GW2GeoJSON{
 				level    : task.level,
 				type     : 'task',
 				layertype: 'icon',
-				icon     : 'https://render.guildwars2.com/file/09ACBA53B7412CC3C76E7FEF39929843C20CB0E4/102440.png',
 			}).setGeometry(task.coord).setID(task.id);
 
 			this.featureCollections.task_poly.addFeature({
@@ -260,13 +256,41 @@ class GW2GeoJSON{
 				coords   : heropoint.coord,
 				type     : 'heropoint',
 				layertype: 'icon',
-				icon     : 'https://render.guildwars2.com/file/B4EC6BB3FDBC42557C3CAE0CAA9E57EBF9E462E3/156626.png',
 			}).setGeometry(heropoint.coord);
 		});
 
 		return this;
 	}
 
+	/**
+	 * @param masterypoints
+	 * @returns {GW2GeoJSON}
+	 */
+	masteryPoint(masterypoints){
+
+		if(!masterypoints.length){
+			return this;
+		}
+
+		console.log(masterypoints);
+
+		return this;
+	}
+
+	/**
+	 * @param adventures
+	 * @returns {GW2GeoJSON}
+	 */
+	adventure(adventures){
+
+		if(!adventures.length){
+			return this;
+		}
+
+		console.log(adventures);
+
+		return this;
+	}
 }
 
 /**
@@ -431,8 +455,6 @@ class GeoJSONFeature{
 	}
 
 	/**
-	 * @link http://phpjs.org/functions/in_array/
-	 *
 	 * @param needle
 	 * @param haystack
 	 * @returns {boolean}

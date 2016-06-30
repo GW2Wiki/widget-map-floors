@@ -51,10 +51,72 @@ html, body{
 
 }
 
-.leaflet-task_icon-pane > img:hover{
-	content: url("https://render.guildwars2.com/file/B3DEEC72BBEF0C6FC6FEF835A0E275FCB1151BB7/102439.png");
+.gw2map-label{
+
 }
 
-.leaflet-waypoint_icon-pane > img:hover{
-	content: url("https://render.guildwars2.com/file/95CE3F6B0502232AD90034E4B7CE6E5B0FD3CC5F/157354.png");
+.gw2map-icon{
+	width: 32px;
+	height: 32px;
+	background-size: 100%;
 }
+
+.gw2map-popup-icon{
+	display: inline-block;
+	vertical-align: middle;
+	margin-right: 0.25em;
+	background-size: 100%;
+	width: 16px;
+	height: 16px;
+}
+
+/* todo: icons -> data-uri */
+
+.gw2map-heropoint-icon{
+	background-image: url("https://render.guildwars2.com/file/B4EC6BB3FDBC42557C3CAE0CAA9E57EBF9E462E3/156626.png");
+}
+
+.gw2map-task-icon{
+	background-image: url("https://render.guildwars2.com/file/09ACBA53B7412CC3C76E7FEF39929843C20CB0E4/102440.png");
+}
+
+.gw2map-landmark-icon{
+	background-image: url("https://render.guildwars2.com/file/25B230711176AB5728E86F5FC5F0BFAE48B32F6E/97461.png");
+}
+
+.gw2map-unlock-icon{
+	background-image: url("https://render.guildwars2.com/file/943538394A94A491C8632FBEF6203C2013443555/102478.png");
+}
+
+.gw2map-vista-icon{
+	background-image: url("https://render.guildwars2.com/file/A2C16AF497BA3A0903A0499FFBAF531477566F10/358415.png");
+}
+
+.gw2map-waypoint-icon{
+	background-image: url("https://render.guildwars2.com/file/32633AF8ADEA696A1EF56D3AE32D617B10D3AC57/157353.png");
+}
+
+/* hover styles */
+
+.gw2map-task-icon:hover{
+	background-image: url("https://render.guildwars2.com/file/B3DEEC72BBEF0C6FC6FEF835A0E275FCB1151BB7/102439.png");
+}
+
+.gw2map-waypoint-icon:hover{
+	background-image: url("https://render.guildwars2.com/file/95CE3F6B0502232AD90034E4B7CE6E5B0FD3CC5F/157354.png");
+}
+
+/* custom icons */
+
+.gw2map-jumpingpuzzle-icon{
+	width: 20px;
+	height: 20px;
+	background-image: url("https://wiki.guildwars2.com/images/3/31/Puzzle_tango_20.png");
+}
+
+.gw2map-masterypoint-icon{
+	width: 25px;
+	height: 25px;
+	background-image: url("https://wiki.guildwars2.com/images/thumb/c/c0/Mastery_point_%28Heart_of_Maguuma%29.png/25px-Mastery_point_%28Heart_of_Maguuma%29.png");
+}
+
