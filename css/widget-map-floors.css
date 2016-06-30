@@ -51,7 +51,7 @@ html, body{
 
 }
 
-.leaflet-task_label-pane > img:hover{
+.leaflet-task_icon-pane > img:hover{
 	content: url("https://render.guildwars2.com/file/B3DEEC72BBEF0C6FC6FEF835A0E275FCB1151BB7/102439.png");
 }
 
