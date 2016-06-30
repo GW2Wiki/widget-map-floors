@@ -48,7 +48,7 @@ class GW2GeoJSON{
 			this.viewRect = this.data.clamped_view;
 		}
 		else if(this.data.texture_dims){
-			this.viewRect = [[0, 0], json.texture_dims];
+			this.viewRect = [[0, 0], this.data.texture_dims];
 		}
 
 		return this;
