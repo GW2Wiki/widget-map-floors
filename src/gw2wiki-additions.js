@@ -1,10 +1,9 @@
 /**
  * Created by Smiley on 22.06.2016.
-
  * additional data by Chieftain Alex
  */
 
-var GW2JumpingPuzzles = [
+const GW2JumpingPuzzles = [
 	{coord: [13198, 13682], link: 'Demongrub Pits (jumping puzzle)'},
 	{coord: [14337, 9656], link: 'Fawcett\'s Bounty'},
 	{coord: [28441, 15516], link: 'Loreclaw Expanse (jumping puzzle)'},
@@ -52,7 +51,7 @@ var GW2JumpingPuzzles = [
 	{coord: [5264, 14970], link: 'Drydock Scratch'},
 ];
 
-var GW2MasteryPoints = [
+const GW2MasteryPoints = [
 	{coord: [2333, 15510], name: 'Verdant Brink Insight: Canopy Over Pact Encampment'},
 	{coord: [2214, 15868], name: 'Verdant Brink Insight: Creaking Cavern'},
 	{coord: [3139, 15439], name: 'Verdant Brink Insight: Creeping Crevasse'},
@@ -78,7 +77,7 @@ var GW2MasteryPoints = [
 	{coord: [3661, 13704], name: 'Maguuma Mastery Insight: Salvation Pass Mastery'},
 ];
 
-var GW2Heropoints = [
+const GW2Heropoints = [
 	{coord: [13317.9, 11967.8], id: 1, link: 'Carnie Jeb'},
 	{coord: [13109.8, 13768.6], id: 2, link: 'Tamini Place of Power'},
 	{coord: [11412.7, 12661.5], id: 3, link: 'Earthen Magic'},
@@ -321,7 +320,7 @@ var GW2Heropoints = [
 	{coord: [2509.69, 15002.3], id: 240, link: 'Pile of Guano'},
 ];
 
-var GW2Vistas = {
+const GW2Vistas = {
 	1565: {name: 'Monument Grounds Vista', link: 'Monument Grounds'},
 	1563: {name: 'Tail of the Star God Vista', link: 'Pockmark Roughs'},
 	1567: {name: 'Griffonclaw Peak Vista', link: 'Splinter Hills'},
