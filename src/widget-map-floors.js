@@ -10,6 +10,9 @@
  *
  * https://github.com/codemasher
  * https://wiki.guildwars2.com/wiki/User:Smiley-1
+ *
+ * @todo https://github.com/arenanet/api-cdi/issues/308
+ *
  */
 
 'use strict';
@@ -111,15 +114,9 @@ class GW2Map {
 	/**
 	 * set bounds and view
 	 *
-	 * @todo https://github.com/arenanet/api-cdi/issues/308
-	 *
 	 * @returns {GW2Map}
 	 */
 	setView(viewRect){
-
-		if(this.options.continent_id === 2 && this.options.floor_id === 3 && this.options.region_id === 7){ // workaround for #308
-			viewRect = [[5118, 6922], [16382, 16382]];
-		}
 
 		let bounds = new GW2ContinentRect(viewRect).getBounds();
 		bounds = new L.LatLngBounds(this.p2ll(bounds[0]), this.p2ll(bounds[1])).pad(0.1);
