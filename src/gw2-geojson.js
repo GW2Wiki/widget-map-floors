@@ -108,13 +108,13 @@ class GW2GeoJSON{
 			name     : region.name,
 			type     : 'region',
 			layertype: 'label',
-		}).setGeometry(region.label_coord);
+		}).setGeometry(region.label_coord).setID(region.id);
 
 		this.featureCollections.region_poly.addFeature({
 			name     : region.name,
 			type     : 'region',
 			layertype: 'poly',
-		}).setGeometry(new GW2ContinentRect(region.continent_rect).getPoly(), 'Polygon');
+		}).setGeometry(new GW2ContinentRect(region.continent_rect).getPoly(), 'Polygon').setID(region.id);
 
 		Object.keys(region.maps).forEach(mapID => this.map(region.maps[mapID]));
 
