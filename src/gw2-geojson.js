@@ -96,8 +96,6 @@ class GW2GeoJSON{
 	}
 
 	/**
-	 * @todo https://github.com/arenanet/api-cdi/issues/336
-	 *
 	 * @param region
 	 * @returns {GW2GeoJSON}
 	 */
@@ -108,13 +106,13 @@ class GW2GeoJSON{
 			name     : region.name,
 			type     : 'region',
 			layertype: 'label',
-		}).setGeometry(region.label_coord);
+		}).setGeometry(region.label_coord).setID(region.id);
 
 		this.featureCollections.region_poly.addFeature({
 			name     : region.name,
 			type     : 'region',
 			layertype: 'poly',
-		}).setGeometry(new GW2ContinentRect(region.continent_rect).getPoly(), 'Polygon');
+		}).setGeometry(new GW2ContinentRect(region.continent_rect).getPoly(), 'Polygon').setID(region.id);
 
 		Object.keys(region.maps).forEach(mapID => this.map(region.maps[mapID]));
 
@@ -122,8 +120,6 @@ class GW2GeoJSON{
 	}
 
 	/**
-	 * @todo https://github.com/arenanet/api-cdi/issues/334
-	 *
 	 * @param map
 	 * @returns {GW2GeoJSON}
 	 */
@@ -139,7 +135,7 @@ class GW2GeoJSON{
 			max_level     : map.max_level,
 			type          : 'map',
 			layertype     : 'label',
-		}).setGeometry(rect.getCenter()).setID(map.id);
+		}).setGeometry(map.label_coord).setID(map.id);
 
 		this.featureCollections.map_poly.addFeature({
 			name     : map.name,
