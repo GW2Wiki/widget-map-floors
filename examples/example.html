@@ -51,7 +51,7 @@
 
 	(($W, $D) =>{
 
-		var containers = $D.getElementsByClassName('gw2map');
+		let containers = $D.getElementsByClassName('gw2map');
 
 		// no map, no scripts.
 		if(!containers.length){
@@ -65,7 +65,7 @@
 			'https://d1h9a8s8eodvjz.cloudfront.net/fonts/menomonia/08-02-12/menomonia-italic.css',
 			'../css/widget-map-floors.css'
 		].forEach(stylesheet =>{
-			var node = $D.createElement('link');
+			let node = $D.createElement('link');
 			node.setAttribute('rel', 'stylesheet');
 			node.setAttribute('href', stylesheet);
 			$D.getElementsByTagName('head')[0].appendChild(node);
@@ -80,7 +80,7 @@
 			'../src/gw2wiki-additions.js',
 			'../src/widget-map-floors.js',
 		].forEach(script =>{
-			var node = $D.createElement('script');
+			let node = $D.createElement('script');
 			node.setAttribute('src', script);
 			$D.getElementsByTagName('body')[0].appendChild(node);
 		});
@@ -93,7 +93,7 @@
 
 				// override L.TileLayer.getTileUrl() and add a custom tile getter
 				L.TileLayer.prototype.getTileUrl = function(coords){
-					var tileGetter = this.options.tileGetter;
+					let tileGetter = this.options.tileGetter;
 
 					if(typeof tileGetter === 'function'){
 						return tileGetter(coords, this._getZoomForUrl());
@@ -103,9 +103,9 @@
 				};
 
 				// saving the GW2Map objects for later usage
-				var maps = [];
+				let maps = [];
 
-				for(var id = 0; id < containers.length; id++){
+				for(let id = 0; id < containers.length; id++){
 					maps[id] = new GW2Map(containers[id], id, {
 						mapAttribution    : true,
 						mapAttributionHTML: ' &copy; <a href="http://www.arena.net/" target="_blank">ArenaNet</a> - <a href="http://wiki.guildwars2.com/wiki/API:Main" target="_blank">GW2 Maps API</a>',
