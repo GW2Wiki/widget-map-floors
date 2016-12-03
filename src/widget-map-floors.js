@@ -71,8 +71,6 @@ class GW2Map {
 			.then(r => new GW2GeoJSON(r).getData())
 			// add additional GeoJSON layers
 			.then(r =>{
-				r.featureCollections.jumpingpuzzle_icon = this.mergeJPs();
-				r.featureCollections.masterypoint_icon  = this.mergeMPs();
 
 				this.layerNames = Object.keys(r.featureCollections);
 
@@ -80,13 +78,12 @@ class GW2Map {
 
 				return r;
 			})
-			// draw the map from the GeoJson data
+			// draw the map from the GeoJSON data
 			.then(r =>{
 
 				this.layerNames.forEach(pane =>{
-					let GeoJSON = r.featureCollections[pane];
-//					console.log(layerName, GeoJSON);
-					this.panes[pane] = L.geoJson(GeoJSON, {
+//					console.log(pane, r.featureCollections[pane]);
+					this.panes[pane] = L.geoJson(r.featureCollections[pane], {
 						pane          : this.map.createPane(pane),
 						coordsToLatLng: coords => this.p2ll(coords),
 						pointToLayer  : (feature, coords) => this.pointToLayer(feature, coords, pane),
@@ -230,20 +227,6 @@ class GW2Map {
 	pointToLayer(feature, coords, pane){
 		let p = feature.properties;
 
-		// merge Alex's Heropoint data
-		if(p.type === 'heropoint'){
-			GW2Heropoints.forEach(hp => {
-				if(p.coords[0] === hp.coord[0] && p.coords[1] === hp.coord[1]){
-					p.name = hp.link;
-					p.id   = hp.id;
-				}
-			});
-		}
-
-		if(p.type === 'vista' && GW2Vistas[p.id]){
-			p.name = GW2Vistas[p.id].link;
-		}
-
 		return L.marker(coords, {
 			pane: pane,
 			title: p.layertype === 'icon' ? p.name : null,
@@ -296,6 +279,13 @@ class GW2Map {
 			content += '<input class="gw2map-chatlink" type="text" value="' + p.chat_link + '" readonly="readonly" onclick="this.select();return false;" />';
 		}
 
+		if(p.description){
+			if(content){
+				content += '<br>';
+			}
+			content += '<div class="gw2map-description">' + p.description + '</div>';
+		}
+
 		if(content){
 			layer.bindPopup(content);
 		}
@@ -325,44 +315,6 @@ class GW2Map {
 		}
 
 		return {};
-	}
-
-	/**
-	 * merge Alex's JP data
-	 *
-	 * @returns {{type: string, features: Array}|*}
-	 */
-	mergeJPs(){
-		let jpFeatures = new GeoJSONFeatureCollection();
-
-		GW2JumpingPuzzles.forEach(jp =>{
-			jpFeatures.addFeature({
-				name     : jp.link,
-				type     : 'jumpingpuzzle',
-				layertype: 'icon',
-			}).setGeometry(jp.coord);
-		});
-
-		return jpFeatures.getJSON();
-	}
-
-	/**
-	 * merge Alex's MP data
-	 *
-	 * @returns {{type: string, features: Array}|*}
-	 */
-	mergeMPs(){
-		let mpFeatures = new GeoJSONFeatureCollection();
-
-		GW2MasteryPoints.forEach(mp =>{
-			mpFeatures.addFeature({
-				name     : mp.name,
-				type     : 'masterypoint',
-				layertype: 'icon',
-			}).setGeometry(mp.coord);
-		});
-
-		return mpFeatures.getJSON();
 	}
 
 	/**

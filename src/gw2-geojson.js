@@ -28,8 +28,8 @@ class GW2GeoJSON{
 			'landmark_icon',
 			'vista_icon',
 			'unlock_icon',
-//			'masterypoint_icon',
-//			'adventure_icon',
+			'masterypoint_icon',
+			'adventure_icon',
 //			'camp', 'tower', 'keep', 'castle', 'ruins', 'generic', 'resource'
 		];
 
@@ -120,6 +120,9 @@ class GW2GeoJSON{
 	}
 
 	/**
+	 * @todo https://github.com/arenanet/api-cdi/issues/334
+	 * @see  https://gitter.im/arenanet/api-cdi?at=5841e14590f847041bee1ec1
+	 *
 	 * @param map
 	 * @returns {GW2GeoJSON}
 	 */
@@ -135,7 +138,7 @@ class GW2GeoJSON{
 			max_level     : map.max_level,
 			type          : 'map',
 			layertype     : 'label',
-		}).setGeometry(map.label_coord).setID(map.id);
+		}).setGeometry(rect.getCenter()).setID(map.id);
 
 		this.featureCollections.map_poly.addFeature({
 			name     : map.name,
@@ -191,7 +194,7 @@ class GW2GeoJSON{
 
 		Object.keys(pois).forEach(poiID =>{
 			let poi = pois[poiID];
-//			console.log(poi);
+//			console.log('POI', poi);
 
 			this.featureCollections[poi.type + '_icon'].addFeature({
 				name     : poi.name || false,
@@ -212,7 +215,7 @@ class GW2GeoJSON{
 
 		Object.keys(tasks).forEach(taskID =>{
 			let task = tasks[taskID];
-//			console.log(task);
+//			console.log('task', task);
 
 			this.featureCollections.task_icon.addFeature({
 				name     : task.objective,
@@ -246,8 +249,7 @@ class GW2GeoJSON{
 		}
 
 		heropoints.forEach(heropoint =>{
-//			console.log(heropoint);
-
+//			console.log('hero point', heropoint);
 			this.featureCollections.heropoint_icon.addFeature({
 				coords   : heropoint.coord,
 				type     : 'heropoint',
@@ -268,7 +270,15 @@ class GW2GeoJSON{
 			return this;
 		}
 
-		console.log(masterypoints);
+		masterypoints.forEach(masterypoint =>{
+//			console.log('mastery point', masterypoint);
+			this.featureCollections.masterypoint_icon.addFeature({
+//				name     : masterypoint.???, // @todo https://gitter.im/arenanet/api-cdi?at=5841f9b744f3e83528cdeb7e
+				region   : masterypoint.region,
+				type     : 'masterypoint',
+				layertype: 'icon',
+			}).setGeometry(masterypoint.coord);
+		});
 
 		return this;
 	}
@@ -283,7 +293,15 @@ class GW2GeoJSON{
 			return this;
 		}
 
-		console.log(adventures);
+		adventures.forEach(adventure =>{
+//			console.log('adventure', adventure);
+			this.featureCollections.adventure_icon.addFeature({
+				name       : adventure.name,
+				description: adventure.description,
+				type       : 'adventure',
+				layertype  : 'icon',
+			}).setGeometry(adventure.coord);
+		});
 
 		return this;
 	}
