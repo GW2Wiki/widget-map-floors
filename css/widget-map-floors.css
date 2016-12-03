@@ -5,7 +5,7 @@ html, body{
 
 .gw2map, .gw2map-v2{
 	width: 100%;
-	height: 720px;
+	height: 960px;
 	margin: 10px 0 10px 0;
 	background: #000;
 }
@@ -52,6 +52,10 @@ html, body{
 }
 
 .gw2map-label{
+
+}
+
+.gw2map-description{
 
 }
 
@@ -108,15 +112,15 @@ html, body{
 
 /* custom icons */
 
-.gw2map-jumpingpuzzle-icon{
+.gw2map-adventure-icon{
 	width: 20px;
 	height: 20px;
-	background-image: url("https://wiki.guildwars2.com/images/3/31/Puzzle_tango_20.png");
+	background-image: url("https://wiki.guildwars2.com/images/thumb/f/ff/Adventure.png/20px-Adventure.png");
 }
 
 .gw2map-masterypoint-icon{
 	width: 25px;
 	height: 25px;
-	background-image: url("https://wiki.guildwars2.com/images/thumb/c/c0/Mastery_point_%28Heart_of_Maguuma%29.png/25px-Mastery_point_%28Heart_of_Maguuma%29.png");
+	background-image: url("https://wiki.guildwars2.com/images/thumb/c/c0/Mastery_point_(Heart_of_Maguuma).png/25px-Mastery_point_(Heart_of_Maguuma).png");
 }
 
