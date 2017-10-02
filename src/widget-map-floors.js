@@ -326,14 +326,12 @@ class GW2Map {
 	}
 
 	/**
-	 * @param point
+	 * @param coords
 	 * @param zoom
-	 * @returns {*[]}
+	 * @returns {[*,*]}
 	 */
-	project(point, zoom){
-		let div = 1 << (this.maxZoom - zoom);
-
-		return [point[0] / div, point[1] / div];
+	project(coords, zoom){
+		return coords.map(c => Math.floor((c / (1 << (this.maxZoom - zoom))) / 256));
 	}
 
 	/**
@@ -342,19 +340,13 @@ class GW2Map {
 	 * @returns {*}
 	 */
 	tileGetter(coords, zoom){
-		let nw = this.project(this.viewRect[0], zoom);
-		let se = this.project(this.viewRect[1], zoom);
+		let clamp = this.viewRect.map(c => this.project(c, zoom));
 
-		if(coords.x < Math.ceil(se[0] / 256)
-		   && coords.y < Math.ceil(se[1] / 256)
-		   && coords.x >= Math.floor(nw[0] / 256)
-		   && coords.y >= Math.floor(nw[1] / 256)
-		){
-			return this.tileBase + this.options.continent_id + '/' + this.options.floor_id +
-				'/' + zoom + '/' + coords.x + '/' + coords.y + this.tileExt;
+		if(coords.x < clamp[0][0] || coords.x > clamp[1][0] || coords.y < clamp[0][1] || coords.y > clamp[1][1]){
+			return this.settings.errorTile;
 		}
 
-		return this.settings.errorTile;
+		return this.tileBase + this.options.continent_id + '/' + this.options.floor_id + '/' + zoom + '/' + coords.x + '/' + coords.y + this.tileExt;
 	}
 
 }
