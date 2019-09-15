@@ -1,83 +1,52 @@
 <noinclude>the scripts for [[Widget:Map floors]] - should be included once per page that displays any amount of maps (WIP), preferably in common.js</noinclude>
 <includeonly><script>
-	'use strict';
 
-	((w, d) =>{
+	function ES6check(){
 
-		var containers = d.getElementsByClassName('gw2map');
-
-		// no map, no scripts.
-		if(!containers.length){
-			return;
+		if(typeof Symbol == 'undefined'){
+			return false;
 		}
 
-		// stylesheets to the <head>
-		[
-			'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.0-rc.1/leaflet.css',
-			'https://d1h9a8s8eodvjz.cloudfront.net/fonts/menomonia/08-02-12/menomonia.css',
-			'https://d1h9a8s8eodvjz.cloudfront.net/fonts/menomonia/08-02-12/menomonia-italic.css',
-			'https://cdn.rawgit.com/GW2Wiki/widget-map-floors/master/css/widget-map-floors.css'
-		].forEach(stylesheet =>{
-			var node = d.createElement('link');
-			node.setAttribute('rel', 'stylesheet');
-			node.setAttribute('href', stylesheet);
-			d.getElementsByTagName('head')[0].appendChild(node);
-		});
+		try{
+			eval('class Foo {}');
+			eval('let bar = (x) => x+1');
+		}
+		catch(e){
+			return false;
+		}
 
-		// scripts to <body>
-		[
-			'https://cdn.rawgit.com/github/fetch/master/fetch.js',
-//			'https://cdn.rawgit.com/MaxArt2501/object-observe/master/dist/object-observe.js',
-			'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.0-rc.1/leaflet.js',
-			'https://cdn.rawgit.com/GW2Wiki/widget-map-floors/master/src/gw2-geojson.js',
-			'https://cdn.rawgit.com/GW2Wiki/widget-map-floors/master/src/widget-map-floors.js',
-		].forEach(script =>{
-			var node = d.createElement('script');
-			node.setAttribute('src', script);
-			d.getElementsByTagName('body')[0].appendChild(node);
-		});
+		return true;
+	}
 
-		// ogogog
-		w.addEventListener('load', () =>{
+	var GW2MapInvokerOptions = {
+		containerClassName: 'gw2map',
+		linkboxClassName  : 'gw2map-linkbox',
+		navClassName      : 'gw2map-nav',
+		scriptContainerId : 'gw2map-script',
+		scripts           : [
+			'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet-src.js',
+//			'https://unpkg.com/leaflet-ant-path@1.3.0/dist/leaflet-ant-path.js',
+			'https://cdn.rawgit.com/GW2Wiki/widget-map-floors/master/src/gw2wiki-additions.js',
+		],
+		stylesheets :[
+			'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.css',
+			'https://cdn.jsdelivr.net/gh/GW2Wiki/widget-map-floors@master/css/widget-map-floors.css',
+		],
+	};
 
-			// check if leaflet is loaded (paranoid)
-			if(L.version){
+	var GW2MapContainers = document.querySelectorAll('.'+GW2MapInvokerOptions.containerClassName);
 
-				// override L.TileLayer.getTileUrl() and add a custom tile getter
-				L.TileLayer.prototype.getTileUrl = function(coords){
-					var tileGetter = this.options.tileGetter;
+	if(GW2MapContainers.length){
 
-					if(typeof tileGetter === 'function'){
-						return tileGetter(coords, this._getZoomForUrl());
-					}
+		var s = document.createElement('script');
+		var e = document.getElementsByTagName('body')[0].getElementsByTagName('script')[0];
 
-					return false;
-				};
+		s.id  = GW2MapInvokerOptions.scriptContainerId;
+		s.src = ES6check()
+			? 'https://cdn.rawgit.com/GW2Wiki/widget-map-floors/master/src/widget-map-floors.js'
+			: 'https://cdn.rawgit.com/GW2Wiki/widget-map-floors/master/src/widget-map-floors-babel.js';
 
-				// saving the mapobjects for later usage
-				var maps = [];
+		e.parentNode.insertBefore(s, e);
+	}
 
-				for(var id = 0; id < containers.length; id++){
-					maps[id] = new GW2Map(containers[id], id, {
-						mapAttribution    : true,
-						mapAttributionHTML: ' &copy; <a href="http://www.arena.net/" target="_blank">ArenaNet</a> - <a href="http://wiki.guildwars2.com/wiki/API:Main" target="_blank">GW2 Maps API</a>',
-						errorTile         : 'https://wiki.guildwars2.com/images/a/af/Widget_Map_floors_blank_tile.png',
-						colors            : {
-							map_poly          : 'rgba(255, 255, 255, 0.3)',
-							region_poly       : 'rgba(255, 255, 255, 0.3)',
-							sector_poly       : 'rgba(255, 200, 20, 0.5)',
-							task_poly         : 'rgba(250, 250, 30, 0.5)',
-						},
-					});
-				}
-
-				maps.forEach(m => m.render());
-
-				console.log(maps);
-			}
-
-		});
-
-	})(window, document);
-
-</script ></includeonly>
+</script></includeonly>

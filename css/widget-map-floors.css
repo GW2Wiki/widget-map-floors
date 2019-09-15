@@ -1,13 +1,50 @@
+/* <nowiki> */
 html, body{
 	margin: 0;
 	padding: 0;
+	width: 100%;
+	height:  100%;
 }
 
-.gw2map, .gw2map-v2{
+.gw2map{
+	display: inline-block;
 	width: 100%;
-	height: 960px;
-	margin: 10px 0 10px 0;
+	height:  100%;
 	background: #000;
+}
+
+.gw2map-linkbox{
+	width: calc(100% - 300px);
+}
+
+.gw2map-nav{
+	display: inline-block;
+	width: 300px;
+	height:  100%;
+	overflow-x: auto;
+	overflow-y: scroll;
+}
+
+.gw2map-navbox > span{
+	display: inline-block;
+	width: calc(100% - 0.5em);
+	padding: 0.1em 0.25em;
+	cursor: pointer;
+	white-space: nowrap;
+}
+
+.gw2map-navbox > span.map_label{
+	font-size: 125%;
+	font-weight: bold;
+	margin-top: 1em;
+}
+
+.gw2map-navbox > span:first-of-type{
+	margin-top: 0.25em;
+}
+
+.gw2map-navbox > span:hover {
+	background-color: rgba(0, 0, 0, 0.2);
 }
 
 .gw2map-layer-contol-icon{
@@ -23,6 +60,7 @@ html, body{
 	font-style: italic;
 	white-space: nowrap;
 	text-align: center;
+	text-shadow: 3px 2px 3px #000000, -2px -2px 3px #010000; /* @todo */
 }
 
 .gw2map-region-label{
@@ -30,11 +68,12 @@ html, body{
 }
 
 .gw2map-map-label{
-	font-size: 24px;
+	font-size: 28px;
+	color: #d7b773;
 }
 
 .gw2map-sector-label{
-	font-size: 20px;
+	font-size: 22px;
 }
 
 .gw2map-chatlink{
@@ -47,57 +86,43 @@ html, body{
 	min-width: 150px;
 }
 
-.gw2map-wikilink{
-
-}
-
-.gw2map-label{
-
-}
-
-.gw2map-description{
-
-}
-
 .gw2map-icon{
 	width: 32px;
 	height: 32px;
 	background-size: 100%;
-}
-
-.gw2map-popup-icon{
-	display: inline-block;
-	vertical-align: middle;
-	margin-right: 0.25em;
-	background-size: 100%;
-	width: 16px;
-	height: 16px;
+	top: -16px;
+	left: -16px;
+	transition: all .3s ease-in-out;
 }
 
 /* todo: icons -> data-uri */
 
-.gw2map-heropoint-icon{
+.gw2map-heropoint-icon, .gw2map-layer-control.heropoint_icon{
 	background-image: url("https://render.guildwars2.com/file/B4EC6BB3FDBC42557C3CAE0CAA9E57EBF9E462E3/156626.png");
 }
 
-.gw2map-task-icon{
+.gw2map-task-icon, .gw2map-layer-control.task_icon{
 	background-image: url("https://render.guildwars2.com/file/09ACBA53B7412CC3C76E7FEF39929843C20CB0E4/102440.png");
 }
 
-.gw2map-landmark-icon{
+.gw2map-landmark-icon, .gw2map-layer-control.landmark_icon{
 	background-image: url("https://render.guildwars2.com/file/25B230711176AB5728E86F5FC5F0BFAE48B32F6E/97461.png");
 }
 
-.gw2map-unlock-icon{
+.gw2map-unlock-icon, .gw2map-layer-control.unlock_icon{
 	background-image: url("https://render.guildwars2.com/file/943538394A94A491C8632FBEF6203C2013443555/102478.png");
 }
 
-.gw2map-vista-icon{
+.gw2map-vista-icon, .gw2map-layer-control.vista_icon{
 	background-image: url("https://render.guildwars2.com/file/A2C16AF497BA3A0903A0499FFBAF531477566F10/358415.png");
 }
 
-.gw2map-waypoint-icon{
+.gw2map-waypoint-icon, .gw2map-layer-control.waypoint_icon{
 	background-image: url("https://render.guildwars2.com/file/32633AF8ADEA696A1EF56D3AE32D617B10D3AC57/157353.png");
+}
+
+.gw2map-adventure-icon, .gw2map-layer-control.adventure_icon{
+	background-image: url("https://render.guildwars2.com/file/94ED0C4A49295657095EF5D09CC8C4E6709E6FCA/961368.png");
 }
 
 /* hover styles */
@@ -112,15 +137,62 @@ html, body{
 
 /* custom icons */
 
-.gw2map-adventure-icon{
+.gw2map-layer-control.masterypoint_icon{
+	background-image: url("https://wiki.guildwars2.com/images/e/e7/Mastery_point_large.png");
+}
+
+.gw2map-masterypoint-icon.tyria{
+	background-image: url("https://wiki.guildwars2.com/images/b/b7/Mastery_point_%28Central_Tyria%29.png");
+}
+
+.gw2map-masterypoint-icon.maguuma{
+	background-image: url("https://wiki.guildwars2.com/images/8/84/Mastery_point_%28Heart_of_Thorns%29.png");
+}
+
+.gw2map-masterypoint-icon.desert{
+	background-image: url("https://wiki.guildwars2.com/images/4/41/Mastery_point_%28Path_of_Fire%29.png");
+}
+
+.gw2map-jumpingpuzzle-icon, .gw2map-layer-control.jumpingpuzzle_icon{
+	background-image: url("https://wiki.guildwars2.com/images/9/94/Jumping_puzzle.png");
+}
+
+.gw2map-event-marker{
+	width: 128px;
+	height: 128px;
+	background-image: url("https://wiki.guildwars2.com/images/1/1c/Event_Mark.png");
+}
+
+.gw2map-landmark-icon{
+	width: 24px;
+	height: 24px;
+	top: -12px;
+	left: -12px;
+}
+
+.gw2map-jumpingpuzzle-icon{
 	width: 20px;
 	height: 20px;
-	background-image: url("https://wiki.guildwars2.com/images/thumb/f/ff/Adventure.png/20px-Adventure.png");
+	top: -10px;
+	left: -10px;
 }
 
-.gw2map-masterypoint-icon{
-	width: 25px;
-	height: 25px;
-	background-image: url("https://wiki.guildwars2.com/images/thumb/c/c0/Mastery_point_(Heart_of_Maguuma).png/25px-Mastery_point_(Heart_of_Maguuma).png");
+.gw2map-popup-icon{
+	display: inline-block;
+	vertical-align: middle;
+	margin-right: 0.25em;
+	background-size: 100%;
+	width: 16px;
+	height: 16px;
 }
 
+.gw2map-layer-control{
+	display: inline-block;
+	vertical-align: middle;
+	width: 16px;
+	height: 16px;
+	margin-right: 0.25em;
+	background-size: 100%;
+}
+
+/* </nowiki> */
