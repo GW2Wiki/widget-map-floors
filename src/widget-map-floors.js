@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 /* <nowiki> */
 /**
  * widget-map-floors
@@ -19,7 +20,7 @@ const GW2MapOptions = {
 //	errorTile         : 'https://wiki.guildwars2.com/images/a/af/Widget_Map_floors_blank_tile.png',
 	initLayers        : [
 		'region_label','map_label','task_icon','heropoint_icon','waypoint_icon','landmark_icon','vista_icon',
-		'unlock_icon','masterypoint_icon','adventure_icon','jumpingpuzzle_icon',
+		'unlock_icon','masterypoint_icon','adventure_icon','jumpingpuzzle_icon', 'sector_label',
 	],
 };
 
@@ -27,7 +28,25 @@ const GW2MapOptions = {
 /**
  * Class GW2Map
  */
-class GW2Map {
+class GW2Map{
+
+	errorTile = 'data:image/png;base64,'
+		+'iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAADHUlEQVR4nO3UMQEAIAzAsIF/zyBjRxMF'
+		+'vXpm5g2QdLcDgD0GAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEG'
+		+'AGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEG'
+		+'AGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEG'
+		+'AGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEG'
+		+'AGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEG'
+		+'AGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEG'
+		+'AGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEG'
+		+'AGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEG'
+		+'AGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEG'
+		+'AGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEG'
+		+'AGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEG'
+		+'AGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEG'
+		+'AGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEfdCIC/5Nk'
+		+'Vo8AAAAASUVORK5CYII=';
+
 
 	// common settings for all maps
 	options = {
@@ -37,26 +56,56 @@ class GW2Map {
 		lang              : 'en',
 		initLayers        : null,
 		mapAttribution    : true,
-		errorTile         : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAADHUlEQVR4nO3UMQEAIAzAsIF/zyBjRxMFvXpm5g2QdLcDgD0GAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEGAGEfdCIC/5NkVo8AAAAASUVORK5CYII=',
+		errorTile         : this.errorTile,
 		padding           : 0.5,
 		defaultZoom       : 4,
 		minZoom           : 0,
 		maxZoom           : 7,
-		apiBase           : 'https://api.guildwars2.com/v2/',
+		fullscreenControl : true,
+		coordView         : true,
+		apiBase           : 'https://api.guildwars2.com',
 		tileBase          : 'https://tiles.guildwars2.com/',
 		tileExt           : '.jpg',
 		colors            : {
-			map_poly   : 'rgba(255, 255, 255, 0.3)',
-			region_poly: 'rgba(255, 155, 255, 0.3)',
-			sector_poly: 'rgba(255, 200, 20, 0.5)',
+			map_poly   : 'rgba(255, 255, 255, 0.5)',
+			region_poly: 'rgba(255, 155, 255, 0.5)',
+			sector_poly: 'rgba(40, 140, 25, 0.5)',
 			task_poly  : 'rgba(250, 250, 30, 0.5)',
+			event_poly : 'rgba(210, 125, 40, 0.5)',
 		},
 	};
+
+	// @todo: un-hardcode
+	iconZoomLayers = [
+		'waypoint_icon',
+		'landmark_icon',
+		'vista_icon',
+		'heropoint_icon',
+		'task_icon',
+		'unlock_icon',
+		'masterypoint_icon',
+		'adventure_icon',
+		'jumpingpuzzle_icon',
+		'region_label',
+		'map_label',
+		'sector_label',
+		'event_icon',
+		'lavatubes',
+		'guild_bounty',
+	];
+
+	linkboxExclude = [
+		'region_label',
+		'region_poly',
+		'map_poly',
+		'sector_poly',
+		'task_poly',
+		'event_poly',
+	];
 
 	// per-map options parsed from the container's dataset
 	dataset = {};
 	layers  = {};
-	panes   = {};
 
 	/**
 	 * GW2Map constructor.
@@ -71,7 +120,6 @@ class GW2Map {
 		this.id        = id;
 		this.options   = GW2MapUtil.extend(this.options, options);
 		this.dataset   = new GW2MapDataset(this.container.dataset, this.options).getData();
-		this.i18n      = GW2MAP_I18N[this.options.lang];
 	}
 
 	/**
@@ -81,22 +129,21 @@ class GW2Map {
 	init(){
 
 		if(this.dataset.linkbox){
-			this.c = document.createElement('div');
-			this.c.className = this.options.navClassName;
-
+			this.linkbox = document.createElement('div');
+			this.linkbox.className = this.options.navClassName;
+			this.linkbox.style = 'max-height:'+this.container.clientHeight+'px;';
 			this.container.className += ' '+this.options.linkboxClassName;
-			this.container.parentNode.insertBefore(this.c, this.container.nextSibling);
+			this.container.parentNode.insertBefore(this.linkbox, this.container.nextSibling);
 		}
 
 		this._setBaseMap();
 
 		// build the request path @todo
-		let url = this.options.apiBase + 'continents/' + this.dataset.continentId + '/floors/' + this.dataset.floorId;
+		let url = this.options.apiBase + '/v2/continents/' + this.dataset.continentId + '/floors/' + this.dataset.floorId;
 		url += this.dataset.regionId ? '/regions/' + this.dataset.regionId : '';
 		url += this.dataset.regionId && this.dataset.mapId ? '/maps/' + this.dataset.mapId : '';
 		url += '?wiki=1&lang=' + this.dataset.language;
-
-		this._request(url, '_render');
+		this._request(url, '_renderFloor');
 
 		return this;
 	}
@@ -114,7 +161,12 @@ class GW2Map {
 		request.addEventListener('load', ev => {
 
 			if(request.readyState === 4 && request.status === 200){
-				return this[callback](JSON.parse(request.responseText));
+				let json = JSON.parse(request.responseText);
+				if(typeof callback === 'string'){
+					return this[callback](json);
+				}
+
+				return callback(json);
 			}
 
 			console.log('(╯°□°）╯彡┻━┻ ', request.status);
@@ -138,10 +190,9 @@ class GW2Map {
 			maxZoom           : this.options.maxZoom,
 			attributionControl: this.options.mapAttribution,
 			zoomControl       : this.dataset.mapControls,
+			fullscreenControl : this.options.fullscreenControl,
+			coordView         : this.options.coordView,
 		});
-
-		this.map.on('click', ev => this._clickEvent(ev));
-//		this.map.on('zoomend', ev => console.log(this.map.getZoom()));
 
 		// the main tile layer
 		L.tileLayer(null, {
@@ -151,38 +202,37 @@ class GW2Map {
 			minZoom         : this.options.minZoom,
 			maxZoom         : this.options.maxZoom,
 			attribution     : this.options.mapAttribution === true
-				? this.i18n.attribution + ' &copy; <a href="http://www.arena.net/" target="_blank">ArenaNet</a>'
+				? GW2MAP_I18N.attribution + ' &copy; <a href="http://www.arena.net/" target="_blank">ArenaNet</a>'
 				: false,
 		}).addTo(this.map);
+
+		// add the layer controls
+		if(this.dataset.mapControls){
+			this.controls = L.control.layers().addTo(this.map);
+		}
 
 		return this;
 	}
 
 	/**
-	 * @param {*} ev
-	 * @private
-	 */
-	_clickEvent(ev){
-		let point = this.map.project(ev.latlng, this.options.maxZoom);
-
-		console.log([point.x, point.y]);
-	}
-
-	/**
-	 * fires the API request and draws the map
-	 *
 	 * @todo https://github.com/arenanet/api-cdi/pull/61
 	 * @todo https://github.com/arenanet/api-cdi/pull/62
 	 * @todo https://github.com/arenanet/api-cdi/issues/308
 	 *
-	 * @returns {GW2Map}
+	 * @param {*} json
 	 * @private
 	 */
-	_render(json){
+	_renderFloor(json){
 		// transform the response to GeoJSON - polyfill for https://github.com/arenanet/api-cdi/pull/62
-		this.json       = new GW2GeoJSON(json, this.dataset.includeMaps, this.dataset.customRect).getData();
-		this.layerNames = Object.keys(this.json.featureCollections);
-		this.viewRect   = this.json.viewRect; // set viewRect for the tile getter
+		this.floorGeoJSON = new GW2FloorGeoJSON(
+			json,
+			this.dataset.customRect,
+			this.dataset.extraLayers,
+			this.dataset.includeMaps
+		);
+
+		let geojson   = this.floorGeoJSON.getData();
+		this.viewRect = geojson.viewRect; // set viewRect for the tile getter
 
 		let rect   = new GW2ContinentRect(this.viewRect).getBounds();
 		let bounds = new L.LatLngBounds(this._p2ll(rect[0]), this._p2ll(rect[1])).pad(this.options.padding);
@@ -190,45 +240,117 @@ class GW2Map {
 		let coords = this.dataset.centerCoords || [];
 
 		if(coords.length === 2){
-			coords.forEach((pos, i) => coords[i] = GW2MapUtil.intval(pos));
-
-			if(coords[0] > this.viewRect[0][0] && coords[1] > this.viewRect[0][1]){
+			if(coords[0] > 0 && coords[0] <= 49152 && coords[1] > 0 && coords[1] <= 49152){
 				center = this._p2ll(coords);
 			}
 		}
 
 		this.map.setMaxBounds(bounds).setView(center, this.dataset.zoom);
 
-		this.layerNames.forEach((pane) => this._createPane(pane, this.options.initLayers || this.layerNames));
+		let panes = Object.keys(geojson.featureCollections);
+		let initLayers = this.dataset.initLayers || this.options.initLayers || panes;
+		panes.forEach(pane => this._createPane(geojson.featureCollections[pane].getJSON(), pane, initLayers));
 
-		// add the layer controls
-		if(this.dataset.mapControls){
-			L.control.layers(null, this.panes).addTo(this.map);
+		this.map.on('zoomend', ev => this._zoomEndEvent());
+		this._zoomEndEvent(); // invoke once to set the icon zoom on the newly created map
+
+		if(this.dataset.events){
+			this._renderEvents();
 		}
-
-		return this;
 	}
 
 	/**
+	 * @private
+	 */
+	_zoomEndEvent(){
+		let zoom = this.map.getZoom();
+
+		this.iconZoomLayers.forEach(layer => {
+
+			if(!this.layers[layer]){
+				return;
+			}
+
+			let element = this.layers[layer].options.pane;
+
+			if(zoom >= 5){
+				PrototypeElement.removeClassName(element, 'half');
+			}
+			else if(zoom < 5 && zoom >= 3){
+				PrototypeElement.removeClassName(element, 'quarter');
+				PrototypeElement.addClassName(element, 'half');
+			}
+
+			else if(zoom < 3 && zoom >= 1){
+				PrototypeElement.removeClassName(element, 'half');
+				PrototypeElement.removeClassName(element, 'invis');
+				PrototypeElement.addClassName(element, 'quarter');
+			}
+			else if(zoom < 1){
+				PrototypeElement.removeClassName(element, 'quarter');
+				PrototypeElement.addClassName(element, 'invis');
+			}
+
+			// i hate this.
+			if(GW2MapUtil.in_array(layer, ['region_label','map_label','sector_label'])){
+				Object.keys(element.children).forEach(c => {
+					let e = element.children[c];
+					let origin = window.getComputedStyle(e).perspectiveOrigin.split(' ');
+
+					e.style.left = '-'+origin[0];
+					e.style.top = '-'+origin[1];
+				});
+			}
+
+		});
+
+	}
+
+	/**
+	 * @private
+	 */
+	_renderEvents(){
+
+		this._request(this.options.apiBase + '/v1/event_details.json?lang=' + this.dataset.language, event_details => {
+			this._request(this.options.apiBase + '/v1/maps.json?lang=' + this.dataset.language, maps => {
+				let eventGeoJSON = new GW2EventGeoJSON(event_details.events, maps.maps, this.floorGeoJSON.maps).getData();
+				let panes = Object.keys(eventGeoJSON.featureCollections);
+				let initLayers = this.dataset.initLayers || this.options.initLayers || panes;
+
+				panes.forEach(pane => {this._createPane(eventGeoJSON.featureCollections[pane].getJSON(), pane, initLayers)});
+			});
+		});
+
+	}
+
+	/**
+	 * @param {GW2FloorGeoJSON[]} geojson
 	 * @param {string} pane
 	 * @param {string[]}initLayers
 	 * @private
 	 */
-	_createPane(pane, initLayers){
-//		console.log(pane, this.json.featureCollections[pane]);
-		this.layers[pane] = L.geoJson(this.json.featureCollections[pane], {
-			pane          : this.map.createPane(pane),
-			coordsToLatLng: coords => this._p2ll(coords),
-			pointToLayer  : (feature, coords) => this._pointToLayer(feature, coords, pane),
-			onEachFeature : (feature, layer) => this._onEachFeature(feature, layer, pane),
-			style         : (feature) => this._layerStyle(feature, pane),
-		});
+	_createPane(geojson, pane, initLayers){
+		let name = '<span class="gw2map-layer-control '+pane+'">&nbsp;</span> ' + GW2MAP_I18N.layers[pane];
+
+		if(!this.layers[pane]){
+			this.layers[pane] = L.geoJson(geojson, {
+				pane          : this.map.createPane(pane),
+				coordsToLatLng: coords => this._p2ll(coords),
+				pointToLayer  : (feature, coords) => this._pointToLayer(feature, coords, pane),
+				onEachFeature : (feature, layer) => this._onEachFeature(feature, layer, pane),
+				style         : (feature) => this._layerStyle(feature, pane),
+			});
+
+			this.controls.addOverlay(this.layers[pane], name)
+					}
+		else{
+			this.layers[pane].addData(geojson);
+		}
 
 		if(GW2MapUtil.in_array(pane, initLayers)){
 			this.layers[pane].addTo(this.map);
 		}
 
-		this.panes['<span class="gw2map-layer-control '+pane+'">&nbsp;</span> ' + this.i18n.layers[pane]] = this.layers[pane];
 	}
 
 	/**
@@ -239,24 +361,20 @@ class GW2Map {
 	 * @private
 	 */
 	_onEachFeature(feature, layer, pane){
-//		console.log(feature, layer, pane);
 		let p       = feature.properties;
 		let content = '';
 
+		// no popup for event circles
+//		if(p.layertype === 'poly' && p.type === 'event'){
+//			return;
+//		}
+
 		if(p.layertype === 'icon'){
 
-			if(p.icon){
-				content += '<img class="gw2map-popup-icon" src="'+ p.icon +'" alt="'+ p.name +'"/>';
-			}
-			else{
-				let classname = 'gw2map-'+ p.type +'-icon';
-
-				if(p.type === 'masterypoint'){
-					classname += ' '+p.region.toLowerCase();
-				}
-
-				content += '<span class="gw2map-popup-icon '+classname+'" ></span>';
-			}
+			content +=
+			p.icon
+				? '<img class="gw2map-popup-icon gw2map-layer-control" src="'+ p.icon +'" alt="'+ p.name +'"/>'
+				: '<span class="gw2map-layer-control '+pane+'" ></span>';
 
 		}
 
@@ -270,7 +388,7 @@ class GW2Map {
 					.replace(/(Mount\:_|Raid—)/, '');
 
 				content += '<a class="gw2map-wikilink" href="'
-					+ GW2MAP_I18N[this.dataset.language].wiki+encodeURIComponent(wikiname)
+					+ GW2MAP_I18N.wiki+encodeURIComponent(wikiname)
 					+ '" target="_blank">' + p.name + '</a>';
 			}
 			else{
@@ -298,7 +416,7 @@ class GW2Map {
 			if(content){
 				content += '<br>';
 			}
-			content += '<div class="gw2map-description">' + p.description + '</div>';
+			content += '<div class="gw2map-description">' + this._parseWikilinks(p.description) + '</div>';
 		}
 
 		if(content){
@@ -311,34 +429,57 @@ class GW2Map {
 	}
 
 	/**
+	 *
+	 * @param {string} str
+	 * @returns {string}
+	 * @private
+	 */
+	_parseWikilinks(str){
+		// noinspection RegExpRedundantEscape
+		return str
+			.replace(/\[\[([^\]\|]+)\]\]/gi, '<a href="'+GW2MAP_I18N.wiki+'$1" target="_blank">$1</a>')
+			.replace(/\[\[([^\|]+)(\|)([^\]]+)\]\]/gi, '<a href="'+GW2MAP_I18N.wiki+'$1" target="_blank">$3</a>');
+	}
+
+	/**
 	 * @param {*}       feature
 	 * @param {L.Layer} layer
 	 * @param {string}  pane
 	 * @private
 	 */
 	_linkboxItem(feature, layer, pane){
+		let p = feature.properties;
 
-		// ignore the region label
-		if(pane === 'region_label'){
+		if(GW2MapUtil.in_array(pane, this.linkboxExclude) || p.mapID === -1){
 			return;
 		}
 
-		let p  = feature.properties;
-		let id = 'gw2map-navbox-map-'+p.mapID.toString();
+		let navid = 'gw2map-navbox-map-'+p.mapID;
+		let nav   = document.getElementById(navid);
 
-		let box = document.getElementById(id);
-
-		if(!box){
-			box = document.createElement('div');
-			box.id = id;
-			box.className = 'gw2map-navbox';
-			this.c.appendChild(box);
+		if(!nav){
+			nav = document.createElement('div');
+			nav.id = navid;
+			nav.className = 'gw2map-navbox';
+			this.linkbox.appendChild(nav);
 		}
 
-		// @todo: containers for each category, icons
+		let paneContentID =  'gw2map-navbox-'+p.mapID+'-'+pane;
+		let paneContent   = document.getElementById(paneContentID);
+
+		if(!paneContent && pane !== 'map_label'){
+			paneContent = document.createElement('div');
+			paneContent.id = paneContentID;
+			nav.appendChild(paneContent);
+		}
+
 		let item = document.createElement('span');
-		item.className = pane;
-		item.innerHTML = p.name || p.id || '-';
+
+		if(pane !== 'map_label'){
+			item.innerHTML = '<span class="gw2map-layer-control '+ pane +'"></span>';
+		}
+
+		item.innerHTML += (p.name || p.id || '-');
 
 		if(typeof layer.getLatLng === 'function'){
 
@@ -351,9 +492,8 @@ class GW2Map {
 
 			// insert the map label as first item
 			pane === 'map_label'
-				? box.insertBefore(item, box.firstChild)
-				: box.appendChild(item);
-
+				? nav.insertBefore(item, nav.firstChild)
+				: paneContent.appendChild(item);
 		}
 
 	}
@@ -367,30 +507,51 @@ class GW2Map {
 	 * @private
 	 */
 	_pointToLayer(feature, coords, pane){
-//		console.log(feature, coords, pane);
-
 		let icon;
 		let p          = feature.properties;
+
+		if(p.layertype === 'poly' && p.type === 'event'){
+			return new L.Circle(coords, feature.properties.radius);
+		}
+
+
 		let iconParams = {
 			pane: pane,
 			iconSize   : null,
 			popupAnchor: 'auto',
+			// temporarily adding the "completed" classname
+			// https://discordapp.com/channels/384735285197537290/384735523521953792/623750587921465364
+			className: 'gw2map-' + p.layertype + ' gw2map-' + p.type + '-' + p.layertype + ' completed'
 		};
 
 		if(p.icon){
 			iconParams.iconUrl = p.icon;
-			icon               = L.icon(iconParams);
+
+			if(p.className){
+				iconParams.className += ' '+p.className;
+			}
+
+			icon = L.icon(iconParams);
+		}
+		else if(p.layertype === 'label'){
+			iconParams.html       = p.name;
+			iconParams.iconAnchor = 'auto';
+
+			icon = new L.LabelIcon(iconParams);
+
+			return new L.LabelMarker(coords, {
+				pane: pane,
+				title: p.name,
+				icon: icon
+			});
 		}
 		else{
-			iconParams.className = 'gw2map-' + p.layertype + ' gw2map-' + p.type + '-' + p.layertype;
-
-			if(p.layertype === 'label'){
-				iconParams.html       = p.name;
-				iconParams.iconAnchor = 'auto';
-			}
 
 			if(p.type === 'masterypoint'){
 				iconParams.className += ' ' + p.region.toLowerCase()
+			}
+			else if(p.type === 'heropoint'){
+				iconParams.className += p.id.split('-')[0] === '0' ? ' core' : ' expac';
 			}
 
 			icon = L.divIcon(iconParams);
@@ -410,24 +571,27 @@ class GW2Map {
 	 * @private
 	 */
 	_layerStyle(feature, pane){
-//		console.log(feature, pane);
-		if(pane === 'polylines'){
-		//	console.log(feature, pane);
+		let p = feature.properties;
 
-		}
-
-		if(GW2MapUtil.in_array(pane, ['region_poly', 'map_poly', 'sector_poly', 'task_poly'])){
+		if(GW2MapUtil.in_array(pane, ['region_poly', 'map_poly', 'sector_poly', 'task_poly', 'event_poly'])){
 			return {
 				pane: pane,
 				stroke: true,
-				opacity: 0.7,
-				color: this.options.colors[pane] || 'rgba(255, 255, 255, 0.3)',
+				opacity: 0.6,
+				color: this.options.colors[pane] || 'rgb(255, 255, 255)',
 				weight: 2,
 				interactive: false,
 			}
 		}
 
-		return {};
+		return {
+			pane: pane,
+			stroke: true,
+			opacity: 0.6,
+			color: p.color || 'rgb(255, 255, 255)',
+			weight: 3,
+			interactive: true,
+		}
 	}
 
 	/**
@@ -457,8 +621,14 @@ class GW2Map {
 	 */
 	_tileGetter(coords, zoom){
 		let clamp = this.viewRect.map(c => this._project(c, zoom));
+		let ta    = this.dataset.tileAdjust;
 
-		if(coords.x < clamp[0][0] || coords.x > clamp[1][0] || coords.y < clamp[0][1] || coords.y > clamp[1][1]){
+		if(
+			coords.x < clamp[0][0] - ta
+			|| coords.x > clamp[1][0] + ta
+			|| coords.y < clamp[0][1] - ta
+			|| coords.y > clamp[1][1] + ta
+		){
 			return this.options.errorTile;
 		}
 
@@ -466,6 +636,325 @@ class GW2Map {
 			+ this.dataset.continentId + '/'
 			+ (this.dataset.customFloor || this.dataset.floorId) + '/'
 			+ zoom + '/' + coords.x + '/' + coords.y + this.options.tileExt;
+	}
+
+}
+
+class GW2MapLocal extends GW2Map{
+
+	// allow custom local tiles to be used direct from the wiki
+	_tileGetter(coords, zoom){
+		let clamp = this.viewRect.map(c => this._project(c, zoom));
+		let ta    = this.dataset.tileAdjust;
+
+		if(
+			// additional limitations on what zoom layer of tiles have been uploaded to the wiki
+			zoom < 5
+			|| coords.x < clamp[0][0] - ta
+			|| coords.x > clamp[1][0] + ta
+			|| coords.y < clamp[0][1] - ta
+			|| coords.y > clamp[1][1] + ta
+		){
+			return this.options.errorTile;
+		}
+
+		let file = 'World_map_tile_C' + this.dataset.continentId + '_Z' + zoom + '_X' + coords.x + '_Y' + coords.y + '.jpg';
+		let md5file = this.md5(file);
+
+		return 'https://wiki.guildwars2.com/images/' + md5file.slice(0,1) + '/'+ md5file.slice(0,2) + '/' + file;
+	}
+
+	md5(str){
+		//  discuss at: https://locutus.io/php/md5/
+		// original by: Webtoolkit.info (https://www.webtoolkit.info/)
+		// improved by: Michael White (https://getsprink.com)
+		// improved by: Jack
+		// improved by: Kevin van Zonneveld (https://kvz.io)
+		//    input by: Brett Zamir (https://brett-zamir.me)
+		// bugfixed by: Kevin van Zonneveld (https://kvz.io)
+		//      note 1: Keep in mind that in accordance with PHP, the whole string is buffered and then
+		//      note 1: hashed. If available, we'd recommend using Node's native crypto modules directly
+		//      note 1: in a steaming fashion for faster and more efficient hashing
+		//   example 1: md5('Kevin van Zonneveld')
+		//   returns 1: '6e658d4bfcb59cc13f96c14450ac40b9'
+
+		let hash, xl;
+
+		let _rotateLeft = function(lValue, iShiftBits){
+			return (lValue << iShiftBits)|(lValue >>> (32 - iShiftBits));
+		};
+
+		let _addUnsigned = function(lX, lY){
+			let lX4, lY4, lX8, lY8, lResult;
+			lX8 = (lX&0x80000000);
+			lY8 = (lY&0x80000000);
+			lX4 = (lX&0x40000000);
+			lY4 = (lY&0x40000000);
+			lResult = (lX&0x3FFFFFFF) + (lY&0x3FFFFFFF);
+			if(lX4&lY4){
+				return (lResult^0x80000000^lX8^lY8);
+			}
+			if(lX4|lY4){
+				if(lResult&0x40000000){
+					return (lResult^0xC0000000^lX8^lY8);
+				}
+				else{
+					return (lResult^0x40000000^lX8^lY8);
+				}
+			}
+			else{
+				return (lResult^lX8^lY8);
+			}
+		};
+
+		let _F = function(x, y, z){
+			return (x&y)|((~x)&z);
+		};
+		let _G = function(x, y, z){
+			return (x&z)|(y&(~z));
+		};
+		let _H = function(x, y, z){
+			return (x^y^z);
+		};
+		let _I = function(x, y, z){
+			return (y^(x|(~z)));
+		};
+
+		let _FF = function(a, b, c, d, x, s, ac){
+			a = _addUnsigned(a, _addUnsigned(_addUnsigned(_F(b, c, d), x), ac));
+			return _addUnsigned(_rotateLeft(a, s), b);
+		};
+
+		let _GG = function(a, b, c, d, x, s, ac){
+			a = _addUnsigned(a, _addUnsigned(_addUnsigned(_G(b, c, d), x), ac));
+			return _addUnsigned(_rotateLeft(a, s), b);
+		};
+
+		let _HH = function(a, b, c, d, x, s, ac){
+			a = _addUnsigned(a, _addUnsigned(_addUnsigned(_H(b, c, d), x), ac));
+			return _addUnsigned(_rotateLeft(a, s), b);
+		};
+
+		let _II = function(a, b, c, d, x, s, ac){
+			a = _addUnsigned(a, _addUnsigned(_addUnsigned(_I(b, c, d), x), ac));
+			return _addUnsigned(_rotateLeft(a, s), b);
+		};
+
+		let _convertToWordArray = function(str){
+			let lWordCount;
+			let lMessageLength = str.length;
+			let lNumberOfWordsTemp1 = lMessageLength + 8;
+			let lNumberOfWordsTemp2 = (lNumberOfWordsTemp1 - (lNumberOfWordsTemp1 % 64)) / 64;
+			let lNumberOfWords = (lNumberOfWordsTemp2 + 1) * 16;
+			let lWordArray = new Array(lNumberOfWords - 1);
+			let lBytePosition = 0;
+			let lByteCount = 0;
+			while(lByteCount < lMessageLength){
+				lWordCount = (lByteCount - (lByteCount % 4)) / 4;
+				lBytePosition = (lByteCount % 4) * 8;
+				lWordArray[lWordCount] = (lWordArray[lWordCount]|(str.charCodeAt(lByteCount) << lBytePosition));
+				lByteCount++;
+			}
+			lWordCount = (lByteCount - (lByteCount % 4)) / 4;
+			lBytePosition = (lByteCount % 4) * 8;
+			lWordArray[lWordCount] = lWordArray[lWordCount]|(0x80 << lBytePosition);
+			lWordArray[lNumberOfWords - 2] = lMessageLength << 3;
+			lWordArray[lNumberOfWords - 1] = lMessageLength >>> 29;
+			return lWordArray;
+		};
+
+		let _wordToHex = function(lValue){
+			let wordToHexValue = '';
+			let wordToHexValueTemp = '';
+			let lByte;
+			let lCount;
+
+			for(lCount = 0; lCount <= 3; lCount++){
+				lByte = (lValue >>> (lCount * 8))&255;
+				wordToHexValueTemp = '0' + lByte.toString(16);
+				wordToHexValue = wordToHexValue + wordToHexValueTemp.substr(wordToHexValueTemp.length - 2, 2);
+			}
+			return wordToHexValue;
+		};
+
+		let k, AA, BB, CC, DD, a, b, c, d;
+		let S11 = 7;
+		let S12 = 12;
+		let S13 = 17;
+		let S14 = 22;
+		let S21 = 5;
+		let S22 = 9;
+		let S23 = 14;
+		let S24 = 20;
+		let S31 = 4;
+		let S32 = 11;
+		let S33 = 16;
+		let S34 = 23;
+		let S41 = 6;
+		let S42 = 10;
+		let S43 = 15;
+		let S44 = 21;
+
+		let x = _convertToWordArray(this.utf8_encode(str));
+		a = 0x67452301;
+		b = 0xEFCDAB89;
+		c = 0x98BADCFE;
+		d = 0x10325476;
+
+		xl = x.length;
+		for(k = 0; k < xl; k += 16){
+			AA = a;
+			BB = b;
+			CC = c;
+			DD = d;
+			a = _FF(a, b, c, d, x[k], S11, 0xD76AA478);
+			d = _FF(d, a, b, c, x[k + 1], S12, 0xE8C7B756);
+			c = _FF(c, d, a, b, x[k + 2], S13, 0x242070DB);
+			b = _FF(b, c, d, a, x[k + 3], S14, 0xC1BDCEEE);
+			a = _FF(a, b, c, d, x[k + 4], S11, 0xF57C0FAF);
+			d = _FF(d, a, b, c, x[k + 5], S12, 0x4787C62A);
+			c = _FF(c, d, a, b, x[k + 6], S13, 0xA8304613);
+			b = _FF(b, c, d, a, x[k + 7], S14, 0xFD469501);
+			a = _FF(a, b, c, d, x[k + 8], S11, 0x698098D8);
+			d = _FF(d, a, b, c, x[k + 9], S12, 0x8B44F7AF);
+			c = _FF(c, d, a, b, x[k + 10], S13, 0xFFFF5BB1);
+			b = _FF(b, c, d, a, x[k + 11], S14, 0x895CD7BE);
+			a = _FF(a, b, c, d, x[k + 12], S11, 0x6B901122);
+			d = _FF(d, a, b, c, x[k + 13], S12, 0xFD987193);
+			c = _FF(c, d, a, b, x[k + 14], S13, 0xA679438E);
+			b = _FF(b, c, d, a, x[k + 15], S14, 0x49B40821);
+			a = _GG(a, b, c, d, x[k + 1], S21, 0xF61E2562);
+			d = _GG(d, a, b, c, x[k + 6], S22, 0xC040B340);
+			c = _GG(c, d, a, b, x[k + 11], S23, 0x265E5A51);
+			b = _GG(b, c, d, a, x[k], S24, 0xE9B6C7AA);
+			a = _GG(a, b, c, d, x[k + 5], S21, 0xD62F105D);
+			d = _GG(d, a, b, c, x[k + 10], S22, 0x2441453);
+			c = _GG(c, d, a, b, x[k + 15], S23, 0xD8A1E681);
+			b = _GG(b, c, d, a, x[k + 4], S24, 0xE7D3FBC8);
+			a = _GG(a, b, c, d, x[k + 9], S21, 0x21E1CDE6);
+			d = _GG(d, a, b, c, x[k + 14], S22, 0xC33707D6);
+			c = _GG(c, d, a, b, x[k + 3], S23, 0xF4D50D87);
+			b = _GG(b, c, d, a, x[k + 8], S24, 0x455A14ED);
+			a = _GG(a, b, c, d, x[k + 13], S21, 0xA9E3E905);
+			d = _GG(d, a, b, c, x[k + 2], S22, 0xFCEFA3F8);
+			c = _GG(c, d, a, b, x[k + 7], S23, 0x676F02D9);
+			b = _GG(b, c, d, a, x[k + 12], S24, 0x8D2A4C8A);
+			a = _HH(a, b, c, d, x[k + 5], S31, 0xFFFA3942);
+			d = _HH(d, a, b, c, x[k + 8], S32, 0x8771F681);
+			c = _HH(c, d, a, b, x[k + 11], S33, 0x6D9D6122);
+			b = _HH(b, c, d, a, x[k + 14], S34, 0xFDE5380C);
+			a = _HH(a, b, c, d, x[k + 1], S31, 0xA4BEEA44);
+			d = _HH(d, a, b, c, x[k + 4], S32, 0x4BDECFA9);
+			c = _HH(c, d, a, b, x[k + 7], S33, 0xF6BB4B60);
+			b = _HH(b, c, d, a, x[k + 10], S34, 0xBEBFBC70);
+			a = _HH(a, b, c, d, x[k + 13], S31, 0x289B7EC6);
+			d = _HH(d, a, b, c, x[k], S32, 0xEAA127FA);
+			c = _HH(c, d, a, b, x[k + 3], S33, 0xD4EF3085);
+			b = _HH(b, c, d, a, x[k + 6], S34, 0x4881D05);
+			a = _HH(a, b, c, d, x[k + 9], S31, 0xD9D4D039);
+			d = _HH(d, a, b, c, x[k + 12], S32, 0xE6DB99E5);
+			c = _HH(c, d, a, b, x[k + 15], S33, 0x1FA27CF8);
+			b = _HH(b, c, d, a, x[k + 2], S34, 0xC4AC5665);
+			a = _II(a, b, c, d, x[k], S41, 0xF4292244);
+			d = _II(d, a, b, c, x[k + 7], S42, 0x432AFF97);
+			c = _II(c, d, a, b, x[k + 14], S43, 0xAB9423A7);
+			b = _II(b, c, d, a, x[k + 5], S44, 0xFC93A039);
+			a = _II(a, b, c, d, x[k + 12], S41, 0x655B59C3);
+			d = _II(d, a, b, c, x[k + 3], S42, 0x8F0CCC92);
+			c = _II(c, d, a, b, x[k + 10], S43, 0xFFEFF47D);
+			b = _II(b, c, d, a, x[k + 1], S44, 0x85845DD1);
+			a = _II(a, b, c, d, x[k + 8], S41, 0x6FA87E4F);
+			d = _II(d, a, b, c, x[k + 15], S42, 0xFE2CE6E0);
+			c = _II(c, d, a, b, x[k + 6], S43, 0xA3014314);
+			b = _II(b, c, d, a, x[k + 13], S44, 0x4E0811A1);
+			a = _II(a, b, c, d, x[k + 4], S41, 0xF7537E82);
+			d = _II(d, a, b, c, x[k + 11], S42, 0xBD3AF235);
+			c = _II(c, d, a, b, x[k + 2], S43, 0x2AD7D2BB);
+			b = _II(b, c, d, a, x[k + 9], S44, 0xEB86D391);
+			a = _addUnsigned(a, AA);
+			b = _addUnsigned(b, BB);
+			c = _addUnsigned(c, CC);
+			d = _addUnsigned(d, DD);
+		}
+
+		let temp = _wordToHex(a) + _wordToHex(b) + _wordToHex(c) + _wordToHex(d);
+
+		return temp.toLowerCase();
+	}
+
+	utf8_encode(argString){
+		//  discuss at: https://locutus.io/php/utf8_encode/
+		// original by: Webtoolkit.info (https://www.webtoolkit.info/)
+		// improved by: Kevin van Zonneveld (https://kvz.io)
+		// improved by: sowberry
+		// improved by: Jack
+		// improved by: Yves Sucaet
+		// improved by: kirilloid
+		// bugfixed by: Onno Marsman (https://twitter.com/onnomarsman)
+		// bugfixed by: Onno Marsman (https://twitter.com/onnomarsman)
+		// bugfixed by: Ulrich
+		// bugfixed by: Rafał Kukawski (https://blog.kukawski.pl)
+		// bugfixed by: kirilloid
+		//   example 1: utf8_encode('Kevin van Zonneveld')
+		//   returns 1: 'Kevin van Zonneveld'
+
+		if(argString === null || typeof argString === 'undefined'){
+			return '';
+		}
+
+		// .replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+		let string = (argString + '');
+		let utftext = '';
+		let start;
+		let end;
+
+		start = end = 0;
+		let stringl = string.length;
+		for(let n = 0; n < stringl; n++){
+			let c1 = string.charCodeAt(n);
+			let enc = null;
+
+			if(c1 < 128){
+				end++;
+			}
+			else if(c1 > 127 && c1 < 2048){
+				enc = String.fromCharCode(
+					(c1 >> 6)|192, (c1&63)|128,
+				);
+			}
+			else if((c1&0xF800) !== 0xD800){
+				enc = String.fromCharCode(
+					(c1 >> 12)|224, ((c1 >> 6)&63)|128, (c1&63)|128,
+				);
+			}
+			else{
+				// surrogate pairs
+				if((c1&0xFC00) !== 0xD800){
+					throw new RangeError('Unmatched trail surrogate at ' + n);
+				}
+				let c2 = string.charCodeAt(++n);
+				if((c2&0xFC00) !== 0xDC00){
+					throw new RangeError('Unmatched lead surrogate at ' + (n - 1));
+				}
+				c1 = ((c1&0x3FF) << 10) + (c2&0x3FF) + 0x10000;
+				enc = String.fromCharCode(
+					(c1 >> 18)|240, ((c1 >> 12)&63)|128, ((c1 >> 6)&63)|128, (c1&63)|128,
+				);
+			}
+			if(enc !== null){
+				if(end > start){
+					utftext += string.slice(start, end);
+				}
+				utftext += enc;
+				start = end = n + 1;
+			}
+		}
+
+		if(end > start){
+			utftext += string.slice(start, stringl);
+		}
+
+		return utftext;
 	}
 
 }
@@ -481,20 +970,22 @@ class GW2MapDataset{
 
 	//noinspection RegExpRedundantEscape
 	metadata = {
-		continentId : {type: 'int',    default: 1},
-		floorId     : {type: 'int',    default: 1},
-		regionId    : {type: 'int',    default: null},
-		mapId       : {type: 'int',    default: null},
-		customFloor : {type: 'int',    default: null},
-		language    : {type: 'int',    default: null},
-		zoom        : {type: 'int',    default: -1},
-		mapControls : {type: 'bool',   default: true},
-		linkbox     : {type: 'bool',   default: false},
-		poiId       : {type: 'string', default: null, regex: /^([\d\-]+)$/},
-		poiType     : {type: 'string', default: null, regex: /^([a-z]+)$/i}, // @todo: infobox type?
-		centerCoords: {type: 'array',  default: null, regex: /^([\[\]\s\d\.,]+)$/},
-		customRect  : {type: 'array',  default: null, regex: /^([\[\]\s\d\.,]+)$/},
-		includeMaps : {type: 'array',  default: [],   regex: /^([\s\d,]+)$/},
+		continentId : {type: 'int',   default: 1},
+		floorId     : {type: 'int',   default: 1},
+		regionId    : {type: 'int',   default: null},
+		mapId       : {type: 'int',   default: null},
+		customFloor : {type: 'int',   default: null},
+		language    : {type: 'int',   default: null},
+		zoom        : {type: 'int',   default: -1},
+		tileAdjust  : {type: 'int',   default: 0},
+		mapControls : {type: 'bool',  default: true},
+		linkbox     : {type: 'bool',  default: false},
+		events      : {type: 'bool',  default: false},
+		initLayers  : {type: 'array', default: null, regex: /^([a-z_,\s]+)$/i},
+		extraLayers : {type: 'array', default: [],   regex: /^([a-z_,\s]+)$/i},
+		centerCoords: {type: 'array', default: null, regex: /^([\[\]\s\d\.,]+)$/},
+		customRect  : {type: 'array', default: null, regex: /^([\[\]\s\d\.,]+)$/},
+		includeMaps : {type: 'array', default: [],   regex: /^([\s\d,]+)$/},
 	};
 
 	dataset = {};
@@ -513,8 +1004,6 @@ class GW2MapDataset{
 	 * @returns {Object}
 	 */
 	getData(){
-
-
 		return this.dataset;
 	}
 
@@ -523,7 +1012,6 @@ class GW2MapDataset{
 	 * @private
 	 */
 	_parse(dataset){
-//		console.log(dataset);
 
 		Object.keys(this.metadata).forEach(k => {
 
@@ -543,7 +1031,6 @@ class GW2MapDataset{
 			}
 		});
 
-//		console.log(this.dataset);
 	}
 
 	/**
@@ -572,12 +1059,22 @@ class GW2MapDataset{
 	 */
 	_parse_array(data, meta){
 		let match = data.match(meta.regex);
-		// console.log(data, match);
+
 		if(match){
 			return match
 		}
 
 		return meta.default;
+	}
+
+	/**
+	 * @param {Object} data
+	 * @param {Object} meta
+	 * @returns {*}
+	 * @private
+	 */
+	_parse_string(data, meta){
+		return this._parse_array(data, meta);
 	}
 
 	/**
@@ -593,12 +1090,32 @@ class GW2MapDataset{
 	/**
 	 * @param {Object} data
 	 * @param {Object} meta
+	 * @returns {number}
+	 * @private
+	 */
+	_parse_regionId(data, meta){
+		return data > 0 ? data : meta.default;
+	}
+
+	/**
+	 * @param {Object} data
+	 * @param {Object} meta
+	 * @returns {number}
+	 * @private
+	 */
+	_parse_mapId(data, meta){
+		return data > 0 ? data : meta.default;
+	}
+
+	/**
+	 * @param {Object} data
+	 * @param {Object} meta
 	 * @returns {string}
 	 * @private
 	 */
 	_parse_language(data, meta){
 		return ['de', 'en', 'es', 'fr', 'zh'][data] || this.options.lang;
-	};
+	}
 
 	/**
 	 * @param {Object} data
@@ -623,8 +1140,7 @@ class GW2MapDataset{
 
 		let ret = [];
 
-		data = data[0].replace(/[^\d,]/g, '').split(',');
-		data.forEach(v => {
+		data[0].replace(/[^\d,]/g, '').split(',').forEach(v => {
 			if(v){
 				ret.push(GW2MapUtil.intval(v));
 			}
@@ -675,6 +1191,48 @@ class GW2MapDataset{
 		return data;
 	}
 
+	/**
+	 * @param {Object} data
+	 * @param {Object} meta
+	 * @returns {string[]}
+	 * @private
+	 */
+	_parse_extraLayers(data, meta){
+
+		if(data === meta.default){
+			return data;
+		}
+
+		let ret = [];
+
+		data[0].replace(/\s/g, '').split(',').forEach(v => {
+			if(v){
+				ret.push(v.toLowerCase());
+			}
+		});
+
+		return ret;
+	}
+
+	/**
+	 * @param {Object} data
+	 * @param {Object} meta
+	 * @returns {string[]}
+	 * @private
+	 */
+	_parse_initLayers(data, meta){
+		return this._parse_extraLayers(data, meta);
+	}
+
+	/**
+	 * @param {Object} data
+	 * @returns {number}
+	 * @private
+	 */
+	_parse_tileAdjust(data){
+		return data < 0 ? 0 : data;
+	}
+
 }
 
 /**
@@ -688,7 +1246,9 @@ class GW2MapUtil{
 	 * @returns {Object}
 	 */
 	static extend(target, source) {
+
 		for(let property in source) {
+			// eslint-disable-next-line no-prototype-builtins
 			if(source.hasOwnProperty(property)) {
 				target[property] = source[property];
 			}
@@ -730,6 +1290,7 @@ class GW2MapUtil{
 	 */
 	static in_array(needle, haystack){
 		for(let key in haystack){
+			// eslint-disable-next-line no-prototype-builtins
 			if(haystack.hasOwnProperty(key)){
 				if(haystack[key] === needle){
 					return true;
@@ -743,67 +1304,92 @@ class GW2MapUtil{
 }
 
 /**
- * Class GW2GeoJSON
- *
- * polyfill for https://github.com/arenanet/api-cdi/pull/62
+ * Class GW2GeoJSONAbstract
  */
-class GW2GeoJSON{
+class GW2GeoJSONAbstract{
 
-	// @todo
-	// the order of these items also determines the order in the layer control menu
-	layers = [
-		'waypoint_icon',
-		'landmark_icon',
-		'vista_icon',
-		'heropoint_icon',
-		'task_icon', 'task_poly',
-		'unlock_icon',
-		'masterypoint_icon',
-		'adventure_icon',
-		'jumpingpuzzle_icon',
-		'region_label', 'region_poly',
-		'map_label', 'map_poly',
-		'sector_label', 'sector_poly',
-		'polylines'
-//		'camp', 'tower', 'keep', 'castle', 'ruins', 'generic', 'resource'
-	];
-
-	data = {};
-	includeMaps = [];
 	featureCollections = {};
+	includeMaps = [];
 
-	/**
-	 * GW2GeoJSON constructor
-	 *
-	 * @param data
-	 * @param includeMaps
-	 * @param customRect
-	 */
-	constructor(data, includeMaps, customRect){
-		this.data        = data;
+	constructor(includeMaps){
 		this.includeMaps = includeMaps;
-
-		this.setView(customRect);
-
-		this.layers.forEach(layer => this.featureCollections[layer] = new GeoJSONFeatureCollection());
 	}
 
 	/**
-	 * @returns {GW2GeoJSON}
+	 * @param {string} layer
+	 * @param {string|number} id
+	 * @param {number} mapID
+	 * @param {string} name
+	 * @param {*} properties
+	 * @param {*} geometry
+	 * @param {string} [geometryType]
+	 * @returns {GW2FloorGeoJSON}
+	 * @protected
+	 */
+	_addFeature(layer, id, mapID, name, properties, geometry, geometryType){
+
+		if(!this.featureCollections[layer]){
+			this.featureCollections[layer] = new GeoJSONFeatureCollection();
+		}
+
+		this.featureCollections[layer]
+			.addFeature(GW2MapUtil.extend({
+				name     : name,
+				mapID    : mapID,
+				layertype: 'icon',
+			}, properties))
+			.setID(id)
+			.setGeometry(geometry, geometryType)
+		;
+
+		return this;
+	}
+
+}
+
+/**
+ * Class GW2FloorGeoJSON
+ *
+ * polyfill for https://github.com/arenanet/api-cdi/pull/62
+ */
+class GW2FloorGeoJSON extends GW2GeoJSONAbstract{
+
+	floordata = {};
+	maps = [];
+
+	/**
+	 * GW2FloorGeoJSON constructor
+	 *
+	 * @param {*} floordata
+	 * @param {[[],[]]} customRect
+	 * @param {string[]} extraMarkers
+	 * @param {number[]} includeMaps
+	 */
+	constructor(floordata, customRect, extraMarkers, includeMaps){
+		super(includeMaps);
+
+		this.floordata    = floordata;
+		this.extraMarkers = ['adventure_icon', 'jumpingpuzzle_icon', 'polylines'].concat(extraMarkers);
+
+		this.setView(customRect);
+	}
+
+	/**
+	 * @returns {GW2FloorGeoJSON}
 	 */
 	setView(customRect){
 
 		if(customRect){
 			this.viewRect = customRect; // @todo
 		}
-		else if(this.data.continent_rect){
-			this.viewRect = this.data.continent_rect;
+		else if(this.floordata.continent_rect){
+			this.viewRect = this.floordata.continent_rect;
 		}
-		else if(this.data.clamped_view){
-			this.viewRect = this.data.clamped_view;
+		else if(this.floordata.clamped_view){
+			this.viewRect = this.floordata.clamped_view;
 		}
-		else if(this.data.texture_dims){
-			this.viewRect = [[0, 0], this.data.texture_dims];
+		else if(this.floordata.texture_dims){
+			this.viewRect = [[0, 0], this.floordata.texture_dims];
 		}
 		else{
 			this.viewRect = [[0, 0], [49152, 49152]];
@@ -818,21 +1404,17 @@ class GW2GeoJSON{
 	getData(){
 
 		// a response to floors
-		if(this.data.regions){
-			this.continent(this.data.regions);
+		if(this.floordata.regions){
+			this.continent(this.floordata.regions);
 		}
 		// a regions response
-		else if(this.data.maps){
-			this.region(this.data);
+		else if(this.floordata.maps){
+			this.region(this.floordata);
 		}
 		// an actual map response
-		else if(this.data.points_of_interest){
-			this.map(this.data);
+		else if(this.floordata.points_of_interest){
+			this.map(this.floordata);
 		}
-
-		Object.keys(this.featureCollections).forEach(f => {
-			this.featureCollections[f] = this.featureCollections[f].getJSON()
-		});
 
 		return {
 			viewRect: this.viewRect,
@@ -843,7 +1425,7 @@ class GW2GeoJSON{
 
 	/**
 	 * @param {*} continent
-	 * @returns {GW2GeoJSON}
+	 * @returns {GW2FloorGeoJSON}
 	 */
 	continent(continent){
 		Object.keys(continent).forEach(regionID => this.region(continent[regionID]));
@@ -853,7 +1435,7 @@ class GW2GeoJSON{
 
 	/**
 	 * @param {*} region
-	 * @returns {GW2GeoJSON}
+	 * @returns {GW2FloorGeoJSON}
 	 */
 	region(region){
 
@@ -861,12 +1443,12 @@ class GW2GeoJSON{
 			type     : 'region',
 			layertype: 'label',
 		}, region.label_coord);
-
+/*
 		this._addFeature('region_poly', region.id, -1, region.name, {
 			type     : 'region',
 			layertype: 'poly',
 		}, new GW2ContinentRect(region.continent_rect).getPoly(), 'Polygon');
-
+*/
 		Object.keys(region.maps).forEach(mapID => {
 			let map = region.maps[mapID];
 			map.id  = GW2MapUtil.intval(mapID);
@@ -887,9 +1469,11 @@ class GW2GeoJSON{
 
 	/**
 	 * @param {*} map
-	 * @returns {GW2GeoJSON}
+	 * @returns {GW2FloorGeoJSON}
 	 */
 	map(map){
+		this.maps.push(map.id);
+
 		let rect = new GW2ContinentRect(map.continent_rect);
 
 		// https://github.com/arenanet/api-cdi/issues/334
@@ -899,51 +1483,87 @@ class GW2GeoJSON{
 			type          : 'map',
 			layertype     : 'label',
 		}, map.label_coord || rect.getCenter());
-
+/*
 		this._addFeature('map_poly', map.id, map.id, map.name, {
 			type     : 'map',
 			layertype: 'poly',
 		}, rect.getPoly(), 'Polygon');
-
+*/
 		this
 			.sectors(map.sectors, map.id)
 			.poi(map.points_of_interest, map.id)
 			.task(map.tasks, map.id)
 			.heropoint(map.skill_challenges, map.id)
 			.masteryPoint(map.mastery_points, map.id)
+			.adventure(map.adventures || [], map.id)
 		;
 
-		let adventures = map.adventures.length
-			? map.adventures
-			: (GW2W_ADVENTURE_DATA[map.id] || []);
+		if(this.extraMarkers.length){
 
-		if(adventures){
-			this.adventure(adventures, map.id)
-		}
+			this.extraMarkers.forEach(layer => {
 
-		if(GW2W_JP_DATA[map.id]){
-			this.jumpingPuzzle(GW2W_JP_DATA[map.id], map.id)
-		}
+				if(!GW2W_EXTRA_DATA[layer] || !GW2W_EXTRA_DATA[layer].data[map.id]){
+					return;
+				}
 
-		if(GW2W_POLYLINES[map.id]){
-			this.polylines(GW2W_POLYLINES[map.id], map.id)
+				this.extra(GW2W_EXTRA_DATA[layer], layer, map.id);
+			});
 		}
 
 		return this;
 	}
 
 	/**
+	 * @param {*} extra
+	 * @param {string} layer
+	 * @param {number} mapID
+	 * @returns {GW2FloorGeoJSON}
+	 */
+	extra(extra, layer, mapID){
+
+		extra.data[mapID].forEach(e => {
+
+			let extraOptions = {
+				icon       : e.icon || extra.icon || null,
+				className  : extra.className,
+				type       : extra.type,
+				color      : e.color || extra.color,
+				layertype  : e.layertype || extra.layertype || 'icon',
+				description: e.description || extra.description || null
+			};
+
+			if(e.antPath || extra.antPath){
+				extraOptions.antPath = e.antPath || extra.antPath;
+				extraOptions.antColor = e.antColor || extra.antColor;
+				extraOptions.antOpacity = e.antOpacity || extra.antOpacity;
+				extraOptions.antDashArray = e.antDashArray || extra.antDashArray;
+			}
+
+			this._addFeature(
+				layer,
+				e.id,
+				mapID,
+				(e.name || extra.name),
+				extraOptions,
+				e.coord,
+				(e.featureType ||extra.featureType || 'Point')
+			);
+		});
+
+	}
+
+	/**
 	 * @param {*} sectors
 	 * @param {number} mapID
-	 * @returns {GW2GeoJSON}
+	 * @returns {GW2FloorGeoJSON}
 	 */
 	sectors(sectors, mapID){
 
 		Object.keys(sectors).forEach(sectorId =>{
 			let sector = sectors[sectorId];
 
-			if(GW2W_SECTORDATA[sectorId]){
-				sector = GW2MapUtil.extend(sector, GW2W_SECTORDATA[sectorId]);
+			if(GW2W_SECTOR_NAMES[sectorId]){
+				sector = GW2MapUtil.extend(sector, GW2W_SECTOR_NAMES[sectorId]);
 			}
 
 			this._addFeature('sector_label', sector.id, mapID, sector.name, {
@@ -965,7 +1585,7 @@ class GW2GeoJSON{
 	/**
 	 * @param {*} pois
 	 * @param {number} mapID
-	 * @returns {GW2GeoJSON}
+	 * @returns {GW2FloorGeoJSON}
 	 */
 	poi(pois, mapID){
 
@@ -980,7 +1600,7 @@ class GW2GeoJSON{
 				name     : poi.name || poi.id ||  '',
 				type     : poi.type,
 				chat_link: poi.chat_link || false,
-				floor    : poi.floor, // ???
+//				floor    : poi.floor, // ???
 				icon     : poi.icon
 			}, poi.coord);
 		});
@@ -991,7 +1611,7 @@ class GW2GeoJSON{
 	/**
 	 * @param {*} tasks
 	 * @param {number} mapID
-	 * @returns {GW2GeoJSON}
+	 * @returns {GW2FloorGeoJSON}
 	 */
 	task(tasks, mapID){
 
@@ -1017,7 +1637,7 @@ class GW2GeoJSON{
 	/**
 	 * @param {*} heropoints
 	 * @param {number} mapID
-	 * @returns {GW2GeoJSON}
+	 * @returns {GW2FloorGeoJSON}
 	 */
 	heropoint(heropoints, mapID){
 
@@ -1028,7 +1648,7 @@ class GW2GeoJSON{
 		heropoints.forEach(heropoint =>{
 			// https://github.com/arenanet/api-cdi/issues/329
 			this._addFeature('heropoint_icon', heropoint.id, mapID, null, {
-				name     : GW2W_HEROPOINT_DATA[heropoint.id] || '',
+				name     : GW2W_HEROPOINT_NAMES[heropoint.id] || '',
 				type     : 'heropoint',
 			}, heropoint.coord)
 		});
@@ -1039,7 +1659,7 @@ class GW2GeoJSON{
 	/**
 	 * @param {*} masterypoints
 	 * @param {number} mapID
-	 * @returns {GW2GeoJSON}
+	 * @returns {GW2FloorGeoJSON}
 	 */
 	masteryPoint(masterypoints, mapID){
 
@@ -1049,7 +1669,7 @@ class GW2GeoJSON{
 
 		masterypoints.forEach(masterypoint =>{
 			this._addFeature('masterypoint_icon', masterypoint.id, mapID, null, {
-				name     : GW2W_MASTERYPOINT_DATA[masterypoint.id] || '',
+				name     : GW2W_MASTERYPOINT_NAMES[masterypoint.id] || '',
 				region   : masterypoint.region,
 				type     : 'masterypoint',
 			}, masterypoint.coord)
@@ -1061,7 +1681,7 @@ class GW2GeoJSON{
 	/**
 	 * @param {*} adventures
 	 * @param {number} mapID
-	 * @returns {GW2GeoJSON}
+	 * @returns {GW2FloorGeoJSON}
 	 */
 	adventure(adventures, mapID){
 
@@ -1079,63 +1699,73 @@ class GW2GeoJSON{
 		return this;
 	}
 
-	/**
-	 * @param {*} jp_data
-	 * @param {number} mapID
-	 * @returns {GW2GeoJSON}
-	 */
-	jumpingPuzzle(jp_data, mapID){
+}
 
-		jp_data.forEach(jp => {
-			this._addFeature('jumpingpuzzle_icon', null, mapID, jp.name, {
-				type     : 'jumpingpuzzle',
-			}, jp.coord)
-		});
+/**
+ * Class GW2EventGeoJSON
+ */
+class GW2EventGeoJSON extends GW2GeoJSONAbstract{
 
-		return this;
+	event_details = {};
+	map_details = {};
+	map = {};
+
+	constructor(event_details, map_details, includeMaps){
+		super(includeMaps);
+
+		this.event_details = event_details;
+		this.map_details = map_details;
 	}
 
-	/**
-	 * @param {*} line_data
-	 * @param {number} mapID
-	 * @returns {GW2GeoJSON}
-	 */
-	polylines(line_data, mapID){
+	getData(){
 
-		line_data.forEach(line => {
-			this._addFeature('polylines', null, mapID, line.name, {
-				type     : 'polyline',
-				layertype: 'poly'
-			}, line.coords, 'LineString');
+		Object.keys(this.event_details).forEach(id => {
+			let event = this.event_details[id];
 
-		});
+			if(!GW2MapUtil.in_array(event.map_id, this.includeMaps)){
+				delete this.event_details[id];
+				delete this.map_details[event.map_id];
 
-	}
+				return;
+			}
 
-	/**
-	 * @param {string} layer
-	 * @param {string|number} id
-	 * @param {number} mapID
-	 * @param {string} name
-	 * @param {*} properties
-	 * @param {*} geometry
-	 * @param {string} [geometryType]
-	 * @returns {GW2GeoJSON}
-	 * @private
-	 */
-	_addFeature(layer, id, mapID, name, properties, geometry, geometryType){
+			let map = this.map_details[event.map_id];
 
-		this.featureCollections[layer]
-			.addFeature(GW2MapUtil.extend({
-				name     : name,
-				mapID    : mapID,
+			if(!this.map[event.map_id]){
+				this.map[event.map_id]      = map;
+				this.map[event.map_id].rect = new GW2ContinentRect(map.continent_rect, map.map_rect);
+			}
+
+			map = this.map[event.map_id];
+
+			this._addFeature('event_icon', id, event.map_id, event.name, {
+				icon     : event.icon ? 'https://render.guildwars2.com/file/'+event.icon.signature+'/'+event.icon.file_id+'.png' : null,
+				flags    : event.flags,
+				type     : 'event',
 				layertype: 'icon',
-			}, properties))
-			.setID(id)
-			.setGeometry(geometry, geometryType)
-		;
+			}, map.rect.scaleCoords(event.location.center));
 
-		return this;
+			if(event.location.type === 'poly'){
+				this._addFeature('event_poly', id, event.map_id, event.name, {
+					type     : 'event',
+					layertype: 'poly',
+				}, [event.location.points.map(point => map.rect.scaleCoords(point))], 'Polygon');
+			}
+			else{
+
+				this._addFeature('event_poly', id, event.map_id, event.name, {
+					type     : 'event',
+					layertype: 'poly',
+					radius   : map.rect.scaleLength(event.location.radius),
+				}, map.rect.scaleCoords(event.location.center), 'Point');
+
+			}
+
+		});
+
+		return {
+			featureCollections: this.featureCollections,
+		};
 	}
 
 }
@@ -1149,10 +1779,11 @@ class GW2ContinentRect{
 	 * GW2ContinentRect constructor
 	 *
 	 * @param continent_rect
+	 * @param map_rect
 	 */
-	constructor(continent_rect){
-//		console.log(continent_rect);
-		this.rect = continent_rect;
+	constructor(continent_rect, map_rect){
+		this.rect     = continent_rect;
+		this.map_rect = map_rect;
 	}
 
 	/**
@@ -1191,6 +1822,36 @@ class GW2ContinentRect{
 			[this.rect[1][0], this.rect[1][1]],
 			[this.rect[0][0], this.rect[1][1]]
 		]]
+	}
+
+	/**
+	 * @param {[]} coords    from event_details.json or Mumble Link data.
+	 * @param {[]} [mr]  map_rect taken from maps.json or map_floor.json
+	 * @returns {*[]}
+	 */
+	scaleCoords(coords, mr){
+		mr = this.map_rect || mr;
+
+		return [
+			Math.round(this.rect[0][0]+(this.rect[1][0]-this.rect[0][0])*(coords[0]-mr[0][0])/(mr[1][0]-mr[0][0])),
+			Math.round(this.rect[0][1]+(this.rect[1][1]-this.rect[0][1])*(1-(coords[1]-mr[0][1])/(mr[1][1]-mr[0][1])))
+		]
+	}
+
+	/**
+	 * @param {number} length    from event_details.json or Mumble Link data
+	 * @param {[]}     [map_rect]  taken from maps.json or map_floor.json
+	 * @returns {number}
+	 */
+	scaleLength(length, map_rect){
+		// still unsure about the correct values here
+		length = length / (1/24);
+		map_rect = this.map_rect || map_rect;
+
+		let scalex = (length - map_rect[0][0]) / (map_rect[1][0] - map_rect[0][0]);
+		let scaley = (length - map_rect[0][1]) / (map_rect[1][1] - map_rect[0][1]);
+
+		return Math.sqrt((scalex * scalex) + (scaley * scaley));
 	}
 
 }
@@ -1303,126 +1964,60 @@ class GeoJSONFeature{
 
 }
 
+
+
 /**
- * TODO: es, fr, zh language snippets
+ * prototype DOM rewrite inc
+ * @link https://github.com/prototypejs/prototype/blob/master/src/prototype/dom/dom.js
  */
-const GW2MAP_I18N = {
-	de: {
-		wiki       : 'https://wiki-de.guildwars2.com/wiki/',
-		attribution: 'Kartendaten und -bilder',
-		layers     : {
-			region_label      : 'Regionsnamen',
-			region_poly       : 'Regionsgrenzen',
-			map_label         : 'Kartennamen',
-			map_poly          : 'Kartengrenzen',
-			sector_label      : 'Sektornamen',
-			sector_poly       : 'Sektorgrenzen',
-			task_icon         : 'Aufgaben',
-			task_poly         : 'Aufgabengrenzen',
-			heropoint_icon    : 'Heldenherausforderungen',
-			waypoint_icon     : 'Wegmarken',
-			landmark_icon     : 'Sehenswürdigkeiten',
-			vista_icon        : 'Vista',
-			unlock_icon       : 'Dungeons & Raids',
-			masterypoint_icon : 'Beherrschungspunkte',
-			adventure_icon    : 'Abenteuer',
-			jumpingpuzzle_icon: 'Sprungrätsel',
-			polylines         : 'Polylinien',
-		},
-	},
-	en: {
-		wiki       : 'https://wiki.guildwars2.com/wiki/',
-		attribution: 'Map data and imagery',
-		layers     : {
-			region_label      : 'Region Labels',
-			region_poly       : 'Region Bounds',
-			map_label         : 'Map Labels',
-			map_poly          : 'Map Bounds',
-			sector_label      : 'Sector Labels',
-			sector_poly       : 'Sector Bounds',
-			task_icon         : 'Tasks',
-			task_poly         : 'Task Bounds',
-			heropoint_icon    : 'Hero Challenges',
-			waypoint_icon     : 'Waypoints',
-			landmark_icon     : 'Landmarks',
-			vista_icon        : 'Vistas',
-			unlock_icon       : 'Dungeons & Raids',
-			masterypoint_icon : 'Mastery Insights',
-			adventure_icon    : 'Adventures',
-			jumpingpuzzle_icon: 'Jumping Puzzles',
-			polylines         : 'Polylines',
-		},
-	},
-	es: {
-		wiki       : 'https://wiki-es.guildwars2.com/wiki/',
-		attribution: 'attribution-es',
-		layers     : {
-			region_label      : 'region_label',
-			region_poly       : 'region_poly',
-			map_label         : 'map_label',
-			map_poly          : 'map_poly',
-			sector_label      : 'sector_label',
-			sector_poly       : 'sector_poly',
-			task_icon         : 'task_icon',
-			task_poly         : 'task_poly',
-			heropoint_icon    : 'heropoint_icon',
-			waypoint_icon     : 'waypoint_icon',
-			landmark_icon     : 'landmark_icon',
-			vista_icon        : 'vista_icon',
-			unlock_icon       : 'unlock_icon',
-			masterypoint_icon : 'masterypoint_icon',
-			adventure_icon    : 'adventure_icon',
-			jumpingpuzzle_icon: 'jumpingpuzzle_icon',
-			polylines         : 'polylines',
-		},
-	},
-	fr: {
-		wiki       : 'https://wiki-fr.guildwars2.com/wiki/',
-		attribution: 'attribution-fr',
-		layers     : {
-			region_label      : 'region_label',
-			region_poly       : 'region_poly',
-			map_label         : 'map_label',
-			map_poly          : 'map_poly',
-			sector_label      : 'sector_label',
-			sector_poly       : 'sector_poly',
-			task_icon         : 'task_icon',
-			task_poly         : 'task_poly',
-			heropoint_icon    : 'heropoint_icon',
-			waypoint_icon     : 'waypoint_icon',
-			landmark_icon     : 'landmark_icon',
-			vista_icon        : 'vista_icon',
-			unlock_icon       : 'unlock_icon',
-			masterypoint_icon : 'masterypoint_icon',
-			adventure_icon    : 'adventure_icon',
-			jumpingpuzzle_icon: 'jumpingpuzzle_icon',
-			polylines         : 'polylines',
-		},
-	},
-	zh: {
-		wiki       : '',
-		attribution: 'attribution-zh',
-		layers     : {
-			region_label      : 'region_label',
-			region_poly       : 'region_poly',
-			map_label         : 'map_label',
-			map_poly          : 'map_poly',
-			sector_label      : 'sector_label',
-			sector_poly       : 'sector_poly',
-			task_icon         : 'task_icon',
-			task_poly         : 'task_poly',
-			heropoint_icon    : 'heropoint_icon',
-			waypoint_icon     : 'waypoint_icon',
-			landmark_icon     : 'landmark_icon',
-			vista_icon        : 'vista_icon',
-			unlock_icon       : 'unlock_icon',
-			masterypoint_icon : 'masterypoint_icon',
-			adventure_icon    : 'adventure_icon',
-			jumpingpuzzle_icon: 'jumpingpuzzle_icon',
-			polylines         : 'polylines',
-		},
-	},
-};
+class PrototypeElement{
+
+	static addClassName(element, className){
+
+		if(!this.hasClassName(element, className)){
+			element.className += (element.className ? ' ' : '') + className;
+		}
+
+		return element;
+	}
+
+	static removeClassName(element, className){
+		element.className = element.className
+			.replace(this.getRegExpForClassName(className), ' ')
+			.replace(/^\s+/, '')
+			.replace(/\s+$/, '');
+
+		return element;
+	}
+
+	static toggleClassName(element, className, bool) {
+
+		if(typeof bool === 'undefined'){
+			bool = !this.hasClassName(element, className);
+		}
+
+		return this[bool ? 'addClassName' : 'removeClassName'](element, className);
+	}
+
+	static hasClassName(element, className){
+		let elementClassName = element.className;
+
+		if(elementClassName.length === 0){
+			return false;
+		}
+
+		if(elementClassName === className){
+			return true;
+		}
+
+		return this.getRegExpForClassName(className).test(elementClassName);
+	}
+
+	static getRegExpForClassName(className){
+		return new RegExp('(^|\\s+)' + className + '(\\s+|$)');
+	}
+
+}
 
 // invoke the maps
 (($options, $containers) => {
@@ -1433,13 +2028,20 @@ const GW2MAP_I18N = {
 		return;
 	}
 
-	// stylesheets to the <head>
-	$options.stylesheets.forEach(stylesheet => {
-		let node = document.createElement('link');
-		node.rel  = 'stylesheet';
-		node.href = stylesheet;
-		document.getElementsByTagName('head')[0].appendChild(node);
-	});
+	$options = GW2MapUtil.extend({
+		containerClassName: 'gw2map',
+		linkboxClassName  : 'gw2map-linkbox',
+		navClassName      : 'gw2map-nav',
+		scriptContainerId : 'gw2map-script',
+		localTiles        : false,
+		scripts:[
+			'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet-src.js',
+			'https://wiki.guildwars2.com/index.php?title=Widget:Map_floors/data&action=raw&ctype=text/javascript',
+		],
+		stylesheets: [
+			'https://wiki.guildwars2.com/index.php?title=Widget:Map_floors/style&action=raw&ctype=text/css',
+		],
+	}, $options);
 
 	// scripts to <body>
 	$options.scripts.forEach(script => {
@@ -1448,6 +2050,14 @@ const GW2MAP_I18N = {
 		node.src = script;
 
 		s.parentNode.insertBefore(node, s);
+	});
+
+	// stylesheets to the <head>
+	$options.stylesheets.forEach(stylesheet => {
+		let node = document.createElement('link');
+		node.rel  = 'stylesheet';
+		node.href = stylesheet;
+		document.getElementsByTagName('head')[0].appendChild(node);
 	});
 
 	// ogogog
@@ -1459,6 +2069,229 @@ const GW2MAP_I18N = {
 
 			return;
 		}
+
+		// https://github.com/Leaflet/Leaflet.fullscreen
+		L.Control.Fullscreen = L.Control.extend({
+
+			options: {
+				position: 'topleft',
+				title   : {
+					'false': 'View Fullscreen',
+					'true' : 'Exit Fullscreen',
+				},
+			},
+
+			onAdd: function(map){
+				let container = L.DomUtil.create('div', 'leaflet-control-fullscreen leaflet-bar leaflet-control');
+
+				this.link = L.DomUtil.create('a', 'leaflet-control-fullscreen-button leaflet-bar-part', container);
+				this.link.href = '#';
+
+				this._map = map;
+				this._map.on('fullscreenchange', this._toggleTitle, this);
+				this._toggleTitle();
+
+				L.DomEvent.on(this.link, 'click', this._click, this);
+
+				return container;
+			},
+
+			_click: function(e){
+				L.DomEvent.stopPropagation(e);
+				L.DomEvent.preventDefault(e);
+				this._map.toggleFullscreen(this.options);
+			},
+
+			_toggleTitle: function(){
+				this.link.title = this.options.title[this._map.isFullscreen()];
+			},
+
+		});
+
+		L.Map.include({
+
+			isFullscreen: function(){
+				return this._isFullscreen || false;
+			},
+
+			toggleFullscreen: function(options){
+				let container = this.getContainer();
+
+				if(this.isFullscreen()){
+					if(options && options.pseudoFullscreen){
+						this._disablePseudoFullscreen(container);
+					}
+					else if(document.exitFullscreen){
+						document.exitFullscreen();
+					}
+					else if(document.mozCancelFullScreen){
+						document.mozCancelFullScreen();
+					}
+					else if(document.webkitCancelFullScreen){
+						document.webkitCancelFullScreen();
+					}
+					else if(document.msExitFullscreen){
+						document.msExitFullscreen();
+					}
+					else{
+						this._disablePseudoFullscreen(container);
+					}
+				}
+				else{
+					if(options && options.pseudoFullscreen){
+						this._enablePseudoFullscreen(container);
+					}
+					else if(container.requestFullscreen){
+						container.requestFullscreen();
+					}
+					else if(container.mozRequestFullScreen){
+						container.mozRequestFullScreen();
+					}
+					else if(container.webkitRequestFullscreen){
+						container.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+					}
+					else if(container.msRequestFullscreen){
+						container.msRequestFullscreen();
+					}
+					else{
+						this._enablePseudoFullscreen(container);
+					}
+				}
+
+			},
+
+			_enablePseudoFullscreen: function(container){
+				L.DomUtil.addClass(container, 'leaflet-pseudo-fullscreen');
+				this._setFullscreen(true);
+				this.fire('fullscreenchange');
+			},
+
+			_disablePseudoFullscreen: function(container){
+				L.DomUtil.removeClass(container, 'leaflet-pseudo-fullscreen');
+				this._setFullscreen(false);
+				this.fire('fullscreenchange');
+			},
+
+			_setFullscreen: function(fullscreen){
+				this._isFullscreen = fullscreen;
+				let container = this.getContainer();
+
+				if(fullscreen){
+					L.DomUtil.addClass(container, 'leaflet-fullscreen-on');
+				}
+				else{
+					L.DomUtil.removeClass(container, 'leaflet-fullscreen-on');
+				}
+
+				this.invalidateSize();
+			},
+
+			_onFullscreenChange: function(e){
+				let fullscreenElement =
+					document.fullscreenElement ||
+					document.mozFullScreenElement ||
+					document.webkitFullscreenElement ||
+					document.msFullscreenElement;
+
+				if(fullscreenElement === this.getContainer() && !this._isFullscreen){
+					this._setFullscreen(true);
+					this.fire('fullscreenchange');
+				}
+				else if(fullscreenElement !== this.getContainer() && this._isFullscreen){
+					this._setFullscreen(false);
+					this.fire('fullscreenchange');
+				}
+			},
+
+		});
+
+		L.Map.mergeOptions({fullscreenControl: false});
+
+		L.Map.addInitHook(function(){
+
+			if(this.options.fullscreenControl){
+				this.fullscreenControl = new L.Control.Fullscreen(this.options.fullscreenControl);
+				this.addControl(this.fullscreenControl);
+			}
+
+			let fullscreenchange;
+
+			if('onfullscreenchange' in document){
+				fullscreenchange = 'fullscreenchange';
+			}
+			else if('onmozfullscreenchange' in document){
+				fullscreenchange = 'mozfullscreenchange';
+			}
+			else if('onwebkitfullscreenchange' in document){
+				fullscreenchange = 'webkitfullscreenchange';
+			}
+			else if('onmsfullscreenchange' in document){
+				fullscreenchange = 'MSFullscreenChange';
+			}
+
+			if(fullscreenchange){
+				let onFullscreenChange = L.bind(this._onFullscreenChange, this);
+
+				this.whenReady(function(){
+					L.DomEvent.on(document, fullscreenchange, onFullscreenChange);
+				});
+
+				this.on('unload', function(){
+					L.DomEvent.off(document, fullscreenchange, onFullscreenChange);
+				});
+			}
+		});
+
+		L.control.fullscreen = function(options){
+			return new L.Control.Fullscreen(options);
+		};
+
+
+		// coordinate view with selectable input (eases gw2wiki use)
+		L.Control.Coordview = L.Control.extend({
+
+			options: {
+				position: 'bottomleft',
+			},
+
+			onAdd: function(map){
+				let container     = L.DomUtil.create('div', 'leaflet-control-coordview leaflet-control');
+				let input         = L.DomUtil.create('input');
+				input.type        = 'text';
+				input.placeholder = '<coords>';
+				input.readOnly    = true;
+
+				container.appendChild(input);
+
+				L.DomEvent.disableClickPropagation(container);
+				L.DomEvent.on(input, 'click', ev => ev.target.select());
+
+				map.on('click', ev => {
+					let point = map.project(ev.latlng, map.options.maxZoom);
+
+					input.value = '['+Math.round(point.x)+', '+Math.round(point.y)+']';
+
+					// ckeckbox: copy to clipboard
+					// navigator.clipboard.writeText(input.value);
+				});
+
+				return container;
+			},
+
+		});
+
+		L.Map.mergeOptions({coordView: true});
+
+		L.Map.addInitHook(function () {
+			if (this.options.coordView) {
+				new L.Control.Coordview().addTo(this);
+			}
+		});
+
+		L.control.coordview = function(options){
+			return new L.Control.Coordview(options);
+		};
+
 
 		// override L.TileLayer.getTileUrl() and add a custom tile getter
 		L.TileLayer.include({
@@ -1473,19 +2306,20 @@ const GW2MAP_I18N = {
 			}
 		});
 
+
 		// auto center popups and align div/html icons
 		L.Popup.include({
 			_getAnchor: function(){
 				let anchor = this._source && this._source._getPopupAnchor
-				             ? this._source._getPopupAnchor()
-				             : [0, 0];
+					? this._source._getPopupAnchor()
+					: [0, 0];
 
 				if(typeof anchor === 'string' && anchor.toLowerCase() === 'auto'){
 					let style = {left: 0, top: 0, width: 0};
 
 					// is the layer active?
 					if(this._source._icon){
-						 style = window.getComputedStyle(this._source._icon);
+						style = window.getComputedStyle(this._source._icon);
 					}
 
 					anchor = [
@@ -1498,7 +2332,8 @@ const GW2MAP_I18N = {
 			}
 		});
 
-		L.Marker.include({
+		// i hate this so much. all of it. but it's necessary :(
+		L.LabelMarker = L.Marker.extend({
 			_initIcon: function(){
 				let options    = this.options;
 				let classToAdd = 'leaflet-zoom-' + (this._zoomAnimated ? 'animated' : 'hide');
@@ -1518,9 +2353,6 @@ const GW2MAP_I18N = {
 						icon.title = options.title;
 					}
 
-					if(icon.tagName === 'IMG'){
-						icon.alt = options.alt || '';
-					}
 				}
 
 				L.DomUtil.addClass(icon, classToAdd);
@@ -1533,32 +2365,29 @@ const GW2MAP_I18N = {
 
 				if(options.riseOnHover){
 					this.on({
-						        mouseover: this._bringToFront,
-						        mouseout : this._resetZIndex,
-					        });
+						mouseover: this._bringToFront,
+						mouseout : this._resetZIndex,
+					});
 				}
 
 				if(options.opacity < 1){
 					this._updateOpacity();
 				}
 
+
 				if(addIcon){
 					this.getPane().appendChild(this._icon);
 					// set icon styles after the node is appended to properly get the computed dimensions
-					options.icon._setIconStyles(this._icon, 'icon', addIcon);
+					options.icon._setIconStyles(this._icon, 'icon');
 				}
 
 				this._initInteraction();
-			}
+			},
+
 		});
 
-		L.Icon.include({
-			_setIconStyles:function(img, name, addIcon){
-
-				if(addIcon !== true){
-					return;
-				}
-
+		L.LabelIcon = L.DivIcon.extend({
+			_setIconStyles: function(img, name){
 				img.className = 'leaflet-marker-icon ' + (this.options.className || '');
 
 				let sizeOption = this.options.iconSize;
@@ -1575,7 +2404,6 @@ const GW2MAP_I18N = {
 
 					img.style.left = '-'+origin[0];
 					img.style.top = '-'+origin[1];
-
 				}
 				else{
 					anchor = L.point(anchor || size && size.divideBy(2, true));
@@ -1591,18 +2419,134 @@ const GW2MAP_I18N = {
 					img.style.height = size.y + 'px';
 				}
 
-			}
+			},
+
 		});
 
+		// leaflet-ant-path, but different
+		// https://github.com/rubenspgcavalcante/leaflet-ant-path
+		L.AntPath = L.FeatureGroup.extend({
+
+			_antOptions: {
+				interactive: false,
+				className: 'leaflet-ant-path',
+				color: 'rgb(255, 255, 255)',
+				opacity: 0.7,
+				dashArray: [10 ,20],
+			},
+
+			_optionsMap:{
+				antColor: 'color',
+				antOpacity: 'opacity',
+				antDashArray: 'dashArray',
+			},
+
+			_latLng: null,
+			_antLayers: {main: null, ants: null},
+
+			initialize: function (latLng, options, type){
+				L.FeatureGroup.prototype.initialize.call(this);
+
+				this._latLng = latLng;
+
+				this._parseOptions(options);
+				this._add(type);
+			},
+
+			_parseOptions(options){
+				this.options = L.Util.extend(this.options, options || {});
+
+				Object.keys(this._optionsMap).forEach(k => {
+					if(this.options[k]){
+						this._antOptions[this._optionsMap[k]] = this.options[k];
+
+						delete this.options[k];
+					}
+				});
+
+				delete this.options.antPath;
+
+				this._antOptions.pane = this.options.pane;
+			},
+
+			_add: function(type){
+				this._antLayers.ants = new L[type](this._latLng, this._antOptions);
+				this._antLayers.main = new L[type](this._latLng, this.options);
+
+				this.addLayer(this._antLayers.ants);
+				this.addLayer(this._antLayers.main);
+			},
+
+			// @todo: extend the L.Layer/L.FeatureGroup interface if you need it...
+		});
+
+
+		L.GeoJSON.include({
+
+			_pathTypes: ['Circle', 'CircleMarker', 'Polygon', 'Polyline'],
+
+			addLayer: function(layer){
+
+				if(layer instanceof L.Path){
+					let type = this._guessPathType(layer);
+					let o = layer.options;
+					let p = layer.feature.properties;
+
+					if((o.antPath || p.antPath) && type){
+						let ll    = type.match(/Circle/) ? layer.getLatLng() : layer.getLatLngs();
+						let popup = layer.getPopup();
+
+						// allow setting antPath options from the feature's properties
+						if(p.antPath){
+							['antColor', 'antOpacity', 'antDashArray', ]
+								.forEach(e => o[e] = p[e] || o[e] || null);
+						}
+
+						layer = new L.AntPath(ll, o, type);
+
+						if(popup){
+							layer.bindPopup(popup);
+						}
+					}
+				}
+
+				this._layers[this.getLayerId(layer)] = layer;
+
+				if(this._map){
+					this._map.addLayer(layer);
+				}
+
+				return this;
+			},
+
+			_guessPathType: function(layer){
+
+				for(let i = 0; i < this._pathTypes.length; i++){
+					if(layer instanceof L[this._pathTypes[i]]){
+						return this._pathTypes[i];
+					}
+				}
+
+				return false;
+			}
+
+		});
+
+
 		// save the GW2Map objects for later usage
+		// noinspection JSMismatchedCollectionQueryUpdate
 		let maps = [];
 		let mapOptions = GW2MapUtil.extend(GW2MapOptions, $options);
 
 		Object.keys($containers).forEach(id => {
-			maps[id] = new GW2Map($containers[id], id, mapOptions).init();
+			let gw2map = $options.localTiles
+				? new GW2MapLocal($containers[id], id, mapOptions)
+				: new GW2Map($containers[id], id, mapOptions);
+
+			maps[id] = gw2map.init();
 		});
 
-		console.log(maps);
+//		console.log(maps);
 	});
 
 })(GW2MapInvokerOptions, GW2MapContainers);
