@@ -467,6 +467,20 @@ var GW2W_POIDATA = {
 		3029: {name: 'Pact Command Vista'},
 		3047: {name: 'Scorched Cliffs Vista'},
 		3049: {name: 'Umbral Battlegrounds Vista'},
+		3063: {name: 'Sacnoth Stream Vista'},
+		3066: {name: 'The Ooze Pit Vista'},
+		3072: {name: 'Iron Legion Camp Vista'},
+		3078: {name: 'Rusty Meadows Vista'},
+		3080: {name: 'Flame Legion Camp Vista'},
+		3083: {name: 'Burning Effigy Vista'},
+		3088: {name: 'The Overlook Vista'},
+		3091: {name: 'Khan-Ur\'s Gauntlet Vista'},
+		3092: {name: 'Lower Blood Keep Vista'},
+		3094: {name: 'Doomlore Ruins Vista'},
+		3103: {name: 'Fallen Mountains Vista'},
+		3110: {name: 'Southern Mountains Vista'},
+		3122: {name: 'Fallen Ruins Vista'},
+		3119: {name: 'Asgeir\'s Legacy Vista'}
 	},
 	waypoint: {
 		1018: {name: 'Blue World Hill Waypoint'},
@@ -923,6 +937,13 @@ var GW2W_MASTERYPOINT_NAMES = {
 	463: 'Dragonfall Insight: Skyscale Eyrie',
 	456: 'Dragonfall Insight: Scorched Cliffs Treetop',
 	459: 'Dragonfall Insight: Above the Umbral Battlegrounds',
+	471: 'Bjora Marches Insight: Ravenfrost Caverns',
+	472: 'Bjora Marches Insight: Aberrant Forest',
+	474: 'Bjora Marches Insight: Fallen Mountain Overlook',
+	476: 'Bjora Marches Insight: Asgeir\'s Legacy',
+	485: 'Bjora Marches Insight: Frozen Waterfall',
+	490: 'Bjora Marches Insight: Drakkar\'s Lair',
+	492: 'Bjora Marches Insight: The Lost Kodan Ship',
 };
 
 var GW2W_SECTOR_NAMES = {
@@ -1058,11 +1079,11 @@ var GW2W_EXTRA_DATA = {
 				{coord: [24009, 21265], name: 'Thunderhead Keep Volatile Delivery'},
 				{coord: [23262, 22032], name: 'Ice Floe Magnet Run'},
 			],
-			1330:[ /* @todo: accurate coords */
-				{coord: [29006, 2168], name: 'Time Trial: Grothmar Grand Tour'},
-				{coord: [29505, 2734], name: 'Grothmar Valley Skyscale Trial'},
-				{coord: [29258, 2844], name: 'Time Trial: Grothmar Crater Circuit'},
-				{coord: [29149, 2517], name: 'Ash Training Course'},
+			1330:[
+				{coord: [29007, 2151], name: 'Time Trial: Grothmar Grand Tour'},
+				{coord: [29516, 2717], name: 'Grothmar Valley Skyscale Trial'},
+				{coord: [29251, 2831], name: 'Time Trial: Grothmar Crater Circuit'},
+				{coord: [29149, 2518], name: 'Ash Training Course'},
 			],
 		},
 	},
@@ -1142,7 +1163,7 @@ var GW2W_EXTRA_DATA = {
 				{coord: [17352, 15627], name: 'Weyandt\'s Revenge'},
 			],
 			51  : [
-				{coord: [16350, 24467], name: 'The Vizier\'s Tower'},
+				{coord: [16350, 24467], name: 'Vizier\'s Tower'},
 			],
 			53  : [
 				{coord: [17575, 21978], name: 'Hexfoundry Unhinged'},
@@ -1183,7 +1204,7 @@ var GW2W_EXTRA_DATA = {
 				{coord: [16845, 25498], name: 'Abaddon\'s Ascent'},
 			],
 			1330:[
-				{coord: [28822, 1472], name:'Khan-Ur\'s Gauntlet'},
+				{coord: [28822, 1472], name:'Gauntlet of the Khan-Ur'},
 			],
 		},
 	},
@@ -1783,8 +1804,8 @@ var GW2W_EXTRA_DATA = {
 						[18130,17599], [18166,17561], [18204,17535], [18313,17450], [18424,17391], [18455,17391], [18482,17412], [18505,17442],
 						[18558,17465], [18591,17483], [18610,17522], [18631,17570], [18654,17587], [18676,17597], [18695,17602], [18713,17600],
 						[18743,17596], [18779,17592], [18833,17516], [18876,17405], [18887,17342], [18902,17270], [18909,17204], [18938,17155],
-						[18942,17066], [18977,16997], [19039,16853], [19073,16716], [19093,16580], [19091,16443], [19061,16306], [19065,16268],
-						[19053,16243], [19021,16194], [18978,16155], [18930,16138], [18867,16091], [18842,16059], [18814,16011], [18796,15971],
+						[18942,17066], [18977,16997], [19039,16853], [19056,16618], [18942,16604], [18878,16554], [18891,16482], [18855,16462],
+						[18769,16329], [18822,16287], [18837,16241], [18834,16156], [18833,16049], [18814,16011], [18796,15971],
 						[18746,15949], [18722,15926], [18696,15911], [18690,15943], [18676,15976], [18650,15997], [18632,16029], [18612,16063],
 						[18543,16055], [18505,16055], [18464,16062], [18407,16063], [18369,16046], [18351,15995], [18333,15950], [18335,15904],
 						[18337,15871], [18347,15833], [18403,15760], [18431,15719], [18452,15676], [18474,15634], [18496,15590], [18500,15523],
