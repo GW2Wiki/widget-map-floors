@@ -56,6 +56,7 @@ class GW2Map{
 		lang              : 'en',
 		initLayers        : null,
 		mapAttribution    : true,
+		attributionText   : ' &copy; <a href="http://www.arena.net/" target="_blank">ArenaNet</a>',
 		errorTile         : this.errorTile,
 		padding           : 0.5,
 		defaultZoom       : 4,
@@ -202,7 +203,7 @@ class GW2Map{
 			minZoom         : this.options.minZoom,
 			maxZoom         : this.options.maxZoom,
 			attribution     : this.options.mapAttribution === true
-				? GW2MAP_I18N.attribution + ' &copy; <a href="http://www.arena.net/" target="_blank">ArenaNet</a>'
+				? GW2MAP_I18N.attribution + this.options.attributionText
 				: false,
 		}).addTo(this.map);
 
