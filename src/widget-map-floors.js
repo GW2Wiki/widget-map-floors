@@ -643,15 +643,25 @@ class GW2Map{
 
 class GW2MapLocal extends GW2Map{
 
+	localTileZoomedRects = {};
+
+	constructor(container, id, options){
+		super(container, id, options);
+
+		// pre-calculate zoomed/projected rects for local tiles
+		for(let z = this.options.minZoom; z <= this.options.maxZoom; z++){
+			this.localTileZoomedRects[z] = this.options.localTileRects.map(r => r.map(c => this._project(c, z)));
+		}
+
+	}
+
 	// allow custom local tiles to be used direct from the wiki
 	_tileGetter(coords, zoom){
 		let clamp = this.viewRect.map(c => this._project(c, zoom));
 		let ta    = this.dataset.tileAdjust;
 
 		if(
-			// additional limitations on what zoom layer of tiles have been uploaded to the wiki
-			zoom < 5
-			|| coords.x < clamp[0][0] - ta
+			coords.x < clamp[0][0] - ta
 			|| coords.x > clamp[1][0] + ta
 			|| coords.y < clamp[0][1] - ta
 			|| coords.y > clamp[1][1] + ta
@@ -659,26 +669,37 @@ class GW2MapLocal extends GW2Map{
 			return this.options.errorTile;
 		}
 
-		let file = 'World_map_tile_C' + this.dataset.continentId + '_Z' + zoom + '_X' + coords.x + '_Y' + coords.y + '.jpg';
-		let md5file = this.md5(file);
 
-		return 'https://wiki.guildwars2.com/images/' + md5file.slice(0,1) + '/'+ md5file.slice(0,2) + '/' + file;
-	}
+		for(let i = 0; i < this.localTileZoomedRects[zoom].length; i++){
+			clamp    = this.localTileZoomedRects[zoom][i];
+			let file = 'World_map_tile_C' + this.dataset.continentId;
 
+			if(!(
+				coords.x < clamp[0][0]
+				|| coords.x > clamp[1][0]
+				|| coords.y < clamp[0][1]
+				|| coords.y > clamp[1][1]
+			)){
+				file += ('_Z' + zoom + '_X' + coords.x + '_Y' + coords.y + '.jpg');
+				let md5file = this.md5(file);
+
+				return 'https://wiki.guildwars2.com/images/' + md5file.slice(0,1) + '/'+ md5file.slice(0,2) + '/' + file;
+			}
+		}
+
+		return this.options.tileBase
+			+ this.dataset.continentId + '/'
+			+ (this.dataset.customFloor || this.dataset.floorId) + '/'
+			+ zoom + '/' + coords.x + '/' + coords.y + this.options.tileExt;
+		}
+
+	/**
+	 * @link https://locutus.io/php/md5/
+	 *
+	 * @param str
+	 * @returns {string}
+	 */
 	md5(str){
-		//  discuss at: https://locutus.io/php/md5/
-		// original by: Webtoolkit.info (https://www.webtoolkit.info/)
-		// improved by: Michael White (https://getsprink.com)
-		// improved by: Jack
-		// improved by: Kevin van Zonneveld (https://kvz.io)
-		//    input by: Brett Zamir (https://brett-zamir.me)
-		// bugfixed by: Kevin van Zonneveld (https://kvz.io)
-		//      note 1: Keep in mind that in accordance with PHP, the whole string is buffered and then
-		//      note 1: hashed. If available, we'd recommend using Node's native crypto modules directly
-		//      note 1: in a steaming fashion for faster and more efficient hashing
-		//   example 1: md5('Kevin van Zonneveld')
-		//   returns 1: '6e658d4bfcb59cc13f96c14450ac40b9'
-
 		let hash, xl;
 
 		let _rotateLeft = function(lValue, iShiftBits){
@@ -883,21 +904,13 @@ class GW2MapLocal extends GW2Map{
 		return temp.toLowerCase();
 	}
 
+	/**
+	 * @link https://locutus.io/php/utf8_encode/
+	 *
+	 * @param argString
+	 * @returns {string}
+	 */
 	utf8_encode(argString){
-		//  discuss at: https://locutus.io/php/utf8_encode/
-		// original by: Webtoolkit.info (https://www.webtoolkit.info/)
-		// improved by: Kevin van Zonneveld (https://kvz.io)
-		// improved by: sowberry
-		// improved by: Jack
-		// improved by: Yves Sucaet
-		// improved by: kirilloid
-		// bugfixed by: Onno Marsman (https://twitter.com/onnomarsman)
-		// bugfixed by: Onno Marsman (https://twitter.com/onnomarsman)
-		// bugfixed by: Ulrich
-		// bugfixed by: Rafał Kukawski (https://blog.kukawski.pl)
-		// bugfixed by: kirilloid
-		//   example 1: utf8_encode('Kevin van Zonneveld')
-		//   returns 1: 'Kevin van Zonneveld'
 
 		if(argString === null || typeof argString === 'undefined'){
 			return '';
@@ -2035,8 +2048,9 @@ class PrototypeElement{
 		navClassName      : 'gw2map-nav',
 		scriptContainerId : 'gw2map-script',
 		localTiles        : false,
+		localTileRects    : [],
 		scripts:[
-			'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet-src.js',
+			'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.6.0/leaflet-src.js',
 			'https://wiki.guildwars2.com/index.php?title=Widget:Map_floors/data&action=raw&ctype=text/javascript',
 		],
 		stylesheets: [
