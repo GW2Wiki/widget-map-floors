@@ -48,7 +48,7 @@ class GW2Map{
 		+'Vo8AAAAASUVORK5CYII=';
 
 
-	// common settings for all maps
+	// common default settings for all maps
 	options = {
 		containerClassName: 'gw2map',
 		linkboxClassName  : 'gw2map-linkbox', // additional to containerClassName
@@ -655,7 +655,6 @@ class GW2MapLocal extends GW2Map{
 
 	}
 
-	// allow custom local tiles to be used direct from the wiki
 	_tileGetter(coords, zoom){
 		let clamp = this.viewRect.map(c => this._project(c, zoom));
 		let ta    = this.dataset.tileAdjust;
@@ -669,7 +668,7 @@ class GW2MapLocal extends GW2Map{
 			return this.options.errorTile;
 		}
 
-
+		// allow custom local tiles to be used direct from the wiki
 		for(let i = 0; i < this.localTileZoomedRects[zoom].length; i++){
 			clamp    = this.localTileZoomedRects[zoom][i];
 			let file = 'World_map_tile_C' + this.dataset.continentId;
