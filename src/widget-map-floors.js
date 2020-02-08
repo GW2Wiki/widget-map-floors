@@ -124,6 +124,8 @@ class GW2Map{
 	}
 
 	/**
+	 * initializes the map
+	 *
 	 * @returns {GW2Map}
 	 * @public
 	 */
@@ -139,6 +141,7 @@ class GW2Map{
 			this.options.maxZoom = this.dataset.maxZoom;
 		}
 
+		// create an optional linkbox container and add it besides the map
 		if(this.dataset.linkbox){
 			this.linkbox = document.createElement('div');
 			this.linkbox.className = this.options.navClassName;
@@ -149,17 +152,22 @@ class GW2Map{
 
 		this._setBaseMap();
 
-		// build the request path @todo
-		let url = this.options.apiBase + '/v2/continents/' + this.dataset.continentId + '/floors/' + this.dataset.floorId;
-		url += this.dataset.regionId ? '/regions/' + this.dataset.regionId : '';
-		url += this.dataset.regionId && this.dataset.mapId ? '/maps/' + this.dataset.mapId : '';
-		url += '?wiki=1&lang=' + this.dataset.language;
+		// build the request path
+		let url = this.options.apiBase + '/v2'
+			+ '/continents/' + this.dataset.continentId
+			+ '/floors/' + this.dataset.floorId
+			+ this.dataset.regionId ? '/regions/' + this.dataset.regionId : ''
+			+ this.dataset.regionId && this.dataset.mapId ? '/maps/' + this.dataset.mapId : ''
+			+ '?wiki=1&lang=' + this.dataset.language;
+
 		this._request(url, '_renderFloor');
 
 		return this;
 	}
 
 	/**
+	 * fetches json data from $url and calls $callback with the response data as argument
+	 *
 	 * @param {string} url
 	 * @param {string} callback
 	 * @protected
@@ -173,10 +181,13 @@ class GW2Map{
 
 			if(request.readyState === 4 && request.status === 200){
 				let json = JSON.parse(request.responseText);
+
+				// callback is a class method
 				if(typeof callback === 'string'){
 					return this[callback](json);
 				}
 
+				// lambda callback
 				return callback(json);
 			}
 
@@ -226,9 +237,7 @@ class GW2Map{
 	}
 
 	/**
-	 * @todo https://github.com/arenanet/api-cdi/pull/61
-	 * @todo https://github.com/arenanet/api-cdi/pull/62
-	 * @todo https://github.com/arenanet/api-cdi/issues/308
+	 * parses the floor data and rencers it on the map
 	 *
 	 * @param {*} json
 	 * @protected
@@ -245,6 +254,7 @@ class GW2Map{
 		let geojson   = this.floorGeoJSON.getData();
 		this.viewRect = geojson.viewRect; // set viewRect for the tile getter
 
+		// set map bounds and center
 		let rect   = new GW2ContinentRect(this.viewRect).getBounds();
 		let bounds = new L.LatLngBounds(this._p2ll(rect[0]), this._p2ll(rect[1])).pad(this.options.padding);
 		let center = bounds.getCenter();
@@ -258,19 +268,24 @@ class GW2Map{
 
 		this.map.setMaxBounds(bounds).setView(center, this.dataset.zoom);
 
+		// create layer panes
 		let panes = Object.keys(geojson.featureCollections);
 		let initLayers = this.dataset.initLayers || this.options.initLayers || panes;
+
 		panes.forEach(pane => this._createPane(geojson.featureCollections[pane].getJSON(), pane, initLayers));
 
 		this.map.on('zoomend', ev => this._zoomEndEvent());
 		this._zoomEndEvent(); // invoke once to set the icon zoom on the newly created map
 
+		// render optional event data
 		if(this.dataset.events){
 			this._renderEvents();
 		}
 	}
 
 	/**
+	 * handles leaflet's zoomEnd event, adjusts icon sizes and label positions
+	 *
 	 * @protected
 	 */
 	_zoomEndEvent(){
@@ -318,6 +333,10 @@ class GW2Map{
 	}
 
 	/**
+	 * parse and render additional GW2 event data
+	 *
+	 * @link https://github.com/arenanet/api-cdi/pull/61
+	 *
 	 * @protected
 	 */
 	_renderEvents(){
@@ -335,6 +354,8 @@ class GW2Map{
 	}
 
 	/**
+	 * creates a layer pane and adds data to it
+	 *
 	 * @param {GW2FloorGeoJSON[]} geojson
 	 * @param {string} pane
 	 * @param {string[]}initLayers
@@ -343,6 +364,7 @@ class GW2Map{
 	_createPane(geojson, pane, initLayers){
 		let name = '<span class="gw2map-layer-control '+pane+'">&nbsp;</span> ' + GW2MAP_I18N.layers[pane];
 
+		// create the pane if it doesn't exist
 		if(!this.layers[pane]){
 			this.layers[pane] = L.geoJson(geojson, {
 				pane          : this.map.createPane(pane),
@@ -353,11 +375,13 @@ class GW2Map{
 			});
 
 			this.controls.addOverlay(this.layers[pane], name)
-					}
+		}
+		// otherwise just add the data
 		else{
 			this.layers[pane].addData(geojson);
 		}
 
+		// optionally show that layer on the map
 		if(GW2MapUtil.in_array(pane, initLayers)){
 			this.layers[pane].addTo(this.map);
 		}
@@ -365,6 +389,8 @@ class GW2Map{
 	}
 
 	/**
+	 * prepares the infobox/popup content
+	 *
 	 * @link  http://leafletjs.com/reference-1.5.0.html#geojson-oneachfeature
 	 * @param {*}      feature
 	 * @param {L.Layer}  layer
@@ -382,8 +408,7 @@ class GW2Map{
 
 		if(p.layertype === 'icon'){
 
-			content +=
-			p.icon
+			content += p.icon
 				? '<img class="gw2map-popup-icon gw2map-layer-control" src="'+ p.icon +'" alt="'+ p.name +'"/>'
 				: '<span class="gw2map-layer-control '+pane+'" ></span>';
 
@@ -396,7 +421,7 @@ class GW2Map{
 				let wikiname = p.name.toString()
 					.replace(/\.$/, '')
 					.replace(/\s/g, '_')
-					.replace(/(Mount\:_|Raid—)/, '');
+					.replace(/(Mount\:_|Raid—)/, ''); // @todo: i18n
 
 				content += '<a class="gw2map-wikilink" href="'
 					+ GW2MAP_I18N.wiki+encodeURIComponent(wikiname)
@@ -440,6 +465,7 @@ class GW2Map{
 	}
 
 	/**
+	 * a simple parser that allows creating links in popup texts using wikicode: [[article]] and [[article|name]]
 	 *
 	 * @param {string} str
 	 * @returns {string}
@@ -453,6 +479,8 @@ class GW2Map{
 	}
 
 	/**
+	 * creates a clickable navigation item for the optional linkbox
+	 *
 	 * @param {*}       feature
 	 * @param {L.Layer} layer
 	 * @param {string}  pane
@@ -511,6 +539,8 @@ class GW2Map{
 
 
 	/**
+	 * handle layer icons/markers
+	 *
 	 * @link  http://leafletjs.com/reference-1.5.0.html#geojson-pointtolayer
 	 * @param {*}      feature
 	 * @param {LatLng} coords
@@ -524,7 +554,6 @@ class GW2Map{
 		if(p.layertype === 'poly' && p.type === 'event'){
 			return new L.Circle(coords, feature.properties.radius);
 		}
-
 
 		let iconParams = {
 			pane: pane,
@@ -678,12 +707,14 @@ class GW2MapLocal extends GW2Map{
 			return this.options.errorTile;
 		}
 
+		let floor = (this.dataset.customFloor || this.dataset.floorId);
+
 		// allow custom local tiles to be used direct from the wiki
 		for(let i = 0; i < this.localTileZoomedRects[zoom].length; i++){
 			clamp    = this.localTileZoomedRects[zoom][i];
 			let file = 'World_map_tile_C' + this.dataset.continentId;
 
-			if(!(
+			if(GW2MapUtil.in_array(floor, [1,2,3,4]) && !(
 				coords.x < clamp[0][0]
 				|| coords.x > clamp[1][0]
 				|| coords.y < clamp[0][1]
@@ -696,10 +727,8 @@ class GW2MapLocal extends GW2Map{
 			}
 		}
 
-		return this.options.tileBase
-			+ this.dataset.continentId + '/'
-			+ (this.dataset.customFloor || this.dataset.floorId) + '/'
-			+ zoom + '/' + coords.x + '/' + coords.y + this.options.tileExt;
+		return this.options.tileBase + this.dataset.continentId
+			+ '/' + floor + '/' + zoom + '/' + coords.x + '/' + coords.y + this.options.tileExt;
 		}
 
 	/**
