@@ -152,7 +152,7 @@ class GW2Map{
 	/**
 	 * @param {string} url
 	 * @param {string} callback
-	 * @private
+	 * @protected
 	 */
 	_request(url, callback){
 		// xhr > fetch. DON'T @ ME
@@ -180,7 +180,7 @@ class GW2Map{
 	 * sets the base tiles and adds an optional copyright info
 	 *
 	 * @returns {GW2Map}
-	 * @private
+	 * @protected
 	 */
 	_setBaseMap(){
 
@@ -221,7 +221,7 @@ class GW2Map{
 	 * @todo https://github.com/arenanet/api-cdi/issues/308
 	 *
 	 * @param {*} json
-	 * @private
+	 * @protected
 	 */
 	_renderFloor(json){
 		// transform the response to GeoJSON - polyfill for https://github.com/arenanet/api-cdi/pull/62
@@ -261,7 +261,7 @@ class GW2Map{
 	}
 
 	/**
-	 * @private
+	 * @protected
 	 */
 	_zoomEndEvent(){
 		let zoom = this.map.getZoom();
@@ -308,7 +308,7 @@ class GW2Map{
 	}
 
 	/**
-	 * @private
+	 * @protected
 	 */
 	_renderEvents(){
 
@@ -328,7 +328,7 @@ class GW2Map{
 	 * @param {GW2FloorGeoJSON[]} geojson
 	 * @param {string} pane
 	 * @param {string[]}initLayers
-	 * @private
+	 * @protected
 	 */
 	_createPane(geojson, pane, initLayers){
 		let name = '<span class="gw2map-layer-control '+pane+'">&nbsp;</span> ' + GW2MAP_I18N.layers[pane];
@@ -359,7 +359,7 @@ class GW2Map{
 	 * @param {*}      feature
 	 * @param {L.Layer}  layer
 	 * @param {string} pane
-	 * @private
+	 * @protected
 	 */
 	_onEachFeature(feature, layer, pane){
 		let p       = feature.properties;
@@ -433,7 +433,7 @@ class GW2Map{
 	 *
 	 * @param {string} str
 	 * @returns {string}
-	 * @private
+	 * @protected
 	 */
 	_parseWikilinks(str){
 		// noinspection RegExpRedundantEscape
@@ -446,7 +446,7 @@ class GW2Map{
 	 * @param {*}       feature
 	 * @param {L.Layer} layer
 	 * @param {string}  pane
-	 * @private
+	 * @protected
 	 */
 	_linkboxItem(feature, layer, pane){
 		let p = feature.properties;
@@ -505,7 +505,7 @@ class GW2Map{
 	 * @param {*}      feature
 	 * @param {LatLng} coords
 	 * @param {string} pane
-	 * @private
+	 * @protected
 	 */
 	_pointToLayer(feature, coords, pane){
 		let icon;
@@ -569,7 +569,7 @@ class GW2Map{
 	 * @link  http://leafletjs.com/reference-1.5.0.html#geojson-style
 	 * @param {*}      feature
 	 * @param {string} pane
-	 * @private
+	 * @protected
 	 */
 	_layerStyle(feature, pane){
 		let p = feature.properties;
@@ -598,7 +598,7 @@ class GW2Map{
 	/**
 	 * @param {[*,*]} coords
 	 * @returns {LatLng}
-	 * @private
+	 * @protected
 	 */
 	_p2ll(coords){
 		return this.map.unproject(coords, this.options.maxZoom);
@@ -608,7 +608,7 @@ class GW2Map{
 	 * @param {[*,*]}  coords
 	 * @param {number} zoom
 	 * @returns {[*,*]}
-	 * @private
+	 * @protected
 	 */
 	_project(coords, zoom){
 		return coords.map(c => Math.floor((c / (1 << (this.options.maxZoom - zoom))) / 256));
@@ -618,7 +618,7 @@ class GW2Map{
 	 * @param {[*,*]}  coords
 	 * @param {number} zoom
 	 * @returns {string}
-	 * @private
+	 * @protected
 	 */
 	_tileGetter(coords, zoom){
 		let clamp = this.viewRect.map(c => this._project(c, zoom));
