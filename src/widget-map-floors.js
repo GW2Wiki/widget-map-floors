@@ -129,6 +129,16 @@ class GW2Map{
 	 */
 	init(){
 
+		// limit maxZoom for continent 2 (PvP)
+		if(this.dataset.continentId === 2){
+			this.options.maxZoom = 6;
+		}
+
+		// adjust maxZoom if a dataset value is given
+		if(this.dataset.maxZoom){
+			this.options.maxZoom = this.dataset.maxZoom;
+		}
+
 		if(this.dataset.linkbox){
 			this.linkbox = document.createElement('div');
 			this.linkbox.className = this.options.navClassName;
@@ -990,6 +1000,7 @@ class GW2MapDataset{
 		customFloor : {type: 'int',   default: null},
 		language    : {type: 'int',   default: null},
 		zoom        : {type: 'int',   default: -1},
+		maxZoom     : {type: 'int',   default: 7},
 		tileAdjust  : {type: 'int',   default: 0},
 		mapControls : {type: 'bool',  default: true},
 		linkbox     : {type: 'bool',  default: false},
@@ -1137,6 +1148,16 @@ class GW2MapDataset{
 	 */
 	_parse_zoom(data){
 		return data < this.options.minZoom || data > this.options.maxZoom ? this.options.defaultZoom : data
+	}
+
+	/**
+	 * @param {Object} data
+	 * @param {Object} meta
+	 * @returns {number|null}
+	 * @private
+	 */
+	_parse_maxZoom(data, meta){
+		return GW2MapUtil.in_array(data, [6, 7]) ? data : meta.default;
 	}
 
 	/**
