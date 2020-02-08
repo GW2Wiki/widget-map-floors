@@ -156,8 +156,8 @@ class GW2Map{
 		let url = this.options.apiBase + '/v2'
 			+ '/continents/' + this.dataset.continentId
 			+ '/floors/' + this.dataset.floorId
-			+ this.dataset.regionId ? '/regions/' + this.dataset.regionId : ''
-			+ this.dataset.regionId && this.dataset.mapId ? '/maps/' + this.dataset.mapId : ''
+			+ (this.dataset.regionId ? '/regions/' + this.dataset.regionId : '')
+			+ (this.dataset.regionId && this.dataset.mapId ? '/maps/' + this.dataset.mapId : '')
 			+ '?wiki=1&lang=' + this.dataset.language;
 
 		this._request(url, '_renderFloor');
