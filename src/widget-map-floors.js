@@ -1397,7 +1397,7 @@ class GW2GeoJSONAbstract{
 
 		this.featureCollections[layer]
 			.addFeature(GW2MapUtil.extend({
-				name     : name,
+				name     : (name || ''),
 				mapID    : mapID,
 				layertype: 'icon',
 			}, properties))
